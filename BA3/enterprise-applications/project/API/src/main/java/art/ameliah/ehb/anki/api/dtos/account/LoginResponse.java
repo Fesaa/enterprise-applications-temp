@@ -1,4 +1,4 @@
-package art.ameliah.ehb.api.dtos.account;
+package art.ameliah.ehb.anki.api.dtos.account;
 
 import lombok.Builder;
 import lombok.Getter;

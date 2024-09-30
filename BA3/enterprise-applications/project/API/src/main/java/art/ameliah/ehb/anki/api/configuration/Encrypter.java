@@ -1,4 +1,4 @@
-package art.ameliah.ehb.api.configuration;
+package art.ameliah.ehb.anki.api.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -1,12 +1,11 @@
-package art.ameliah.ehb.api.controllers;
+package art.ameliah.ehb.anki.api.controllers;
 
-import art.ameliah.ehb.api.dtos.account.LoginDto;
-import art.ameliah.ehb.api.dtos.account.LoginResponse;
-import art.ameliah.ehb.api.dtos.account.RegisterDto;
-import art.ameliah.ehb.api.models.account.Role;
-import art.ameliah.ehb.api.models.account.User;
-import art.ameliah.ehb.api.services.AccountService;
-import art.ameliah.ehb.api.services.JwtService;
+import art.ameliah.ehb.anki.api.dtos.account.LoginDto;
+import art.ameliah.ehb.anki.api.dtos.account.LoginResponse;
+import art.ameliah.ehb.anki.api.dtos.account.RegisterDto;
+import art.ameliah.ehb.anki.api.models.account.User;
+import art.ameliah.ehb.anki.api.services.AccountService;
+import art.ameliah.ehb.anki.api.services.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.security.core.GrantedAuthority;

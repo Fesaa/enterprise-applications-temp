@@ -1,9 +1,9 @@
-package art.ameliah.ehb.api.services;
+package art.ameliah.ehb.anki.api.services;
 
-import art.ameliah.ehb.api.exceptions.AppException;
-import art.ameliah.ehb.api.models.account.Role;
-import art.ameliah.ehb.api.models.account.User;
-import art.ameliah.ehb.api.models.account.query.QUser;
+import art.ameliah.ehb.anki.api.exceptions.AppException;
+import art.ameliah.ehb.anki.api.models.account.Role;
+import art.ameliah.ehb.anki.api.models.account.User;
+import art.ameliah.ehb.anki.api.models.account.query.QUser;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

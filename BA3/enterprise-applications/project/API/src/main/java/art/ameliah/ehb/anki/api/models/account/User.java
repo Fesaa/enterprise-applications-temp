@@ -1,7 +1,6 @@
-package art.ameliah.ehb.api.models.account;
+package art.ameliah.ehb.anki.api.models.account;
 
 import io.ebean.Model;
-import io.ebean.annotation.JsonIgnore;
 import io.ebean.annotation.NotNull;
 import lombok.Builder;
 import lombok.Getter;

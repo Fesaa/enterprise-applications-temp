@@ -1,4 +1,4 @@
-package art.ameliah.ehb.api.middleware;
+package art.ameliah.ehb.anki.api.middleware;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

@@ -1,8 +1,8 @@
-package art.ameliah.ehb.api.configuration;
+package art.ameliah.ehb.anki.api.configuration;
 
-import art.ameliah.ehb.api.middleware.JwtAuthFilter;
-import art.ameliah.ehb.api.middleware.UserAuthenticationEntryPoint;
-import art.ameliah.ehb.api.services.JwtService;
+import art.ameliah.ehb.anki.api.middleware.JwtAuthFilter;
+import art.ameliah.ehb.anki.api.middleware.UserAuthenticationEntryPoint;
+import art.ameliah.ehb.anki.api.services.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.context.annotation.Bean;

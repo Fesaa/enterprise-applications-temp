@@ -1,4 +1,4 @@
-package art.ameliah.ehb.api.exceptions;
+package art.ameliah.ehb.anki.api.exceptions;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

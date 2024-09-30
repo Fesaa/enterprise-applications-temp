@@ -1,6 +1,6 @@
-package art.ameliah.ehb.api.middleware;
+package art.ameliah.ehb.anki.api.middleware;
 
-import art.ameliah.ehb.api.services.JwtService;
+import art.ameliah.ehb.anki.api.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

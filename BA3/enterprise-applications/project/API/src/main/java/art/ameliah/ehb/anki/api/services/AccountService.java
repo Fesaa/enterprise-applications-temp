@@ -1,10 +1,10 @@
-package art.ameliah.ehb.api.services;
+package art.ameliah.ehb.anki.api.services;
 
-import art.ameliah.ehb.api.dtos.account.LoginDto;
-import art.ameliah.ehb.api.dtos.account.RegisterDto;
-import art.ameliah.ehb.api.exceptions.AppException;
-import art.ameliah.ehb.api.models.account.User;
-import art.ameliah.ehb.api.models.account.query.QUser;
+import art.ameliah.ehb.anki.api.dtos.account.LoginDto;
+import art.ameliah.ehb.anki.api.dtos.account.RegisterDto;
+import art.ameliah.ehb.anki.api.exceptions.AppException;
+import art.ameliah.ehb.anki.api.models.account.User;
+import art.ameliah.ehb.anki.api.models.account.query.QUser;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;

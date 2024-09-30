@@ -1,4 +1,4 @@
-package art.ameliah.ehb.api.dtos.account;
+package art.ameliah.ehb.anki.api.dtos.account;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterDto {
+public class LoginDto {
 
     private String username;
     private String password;
