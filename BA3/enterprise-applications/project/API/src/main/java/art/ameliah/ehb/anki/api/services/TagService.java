@@ -1,5 +1,7 @@
 package art.ameliah.ehb.anki.api.services;
 
+import art.ameliah.ehb.anki.api.exceptions.AppException;
+import art.ameliah.ehb.anki.api.models.account.User;
 import art.ameliah.ehb.anki.api.models.tags.Tag;
 import art.ameliah.ehb.anki.api.models.tags.query.QTag;
 import art.ameliah.ehb.anki.api.services.model.IStringService;
@@ -33,6 +35,18 @@ public class TagService implements ITagService {
     }
 
     @Override
+    public boolean inUse(Long id) {
+        return !new QTag()
+                .id.eq(id)
+                .decks.fetch()
+                .findOneOrEmpty()
+                .orElseThrow()
+                .getDecks()
+                .isEmpty();
+
+    }
+
+    @Override
     public List<Tag> getTags() {
         return new QTag().findList();
     }
@@ -45,23 +59,38 @@ public class TagService implements ITagService {
     }
 
     @Override
-    public Tag createTag(String name) {
-        return createTag(name, null);
+    public Tag createTag(User user, String name) {
+        return createTag(user, name, null);
     }
 
     @Override
-    public Tag createTag(String name, String hexColour) {
+    public Tag createTag(User user, String name, String hexColour) {
         Optional<Tag> optionalTag = getTag(name);
         if (optionalTag.isPresent()) {
             return optionalTag.get();
         }
 
         Tag tag = Tag.builder()
+                .user(user)
                 .name(name)
                 .normalizedName(stringService.normalize(name))
                 .hexColour(hexColour)
                 .build();
         tag.save();
         return tag;
+    }
+
+    @Override
+    public void deleteTag(Long id) {
+        deleteTag(id, false);
+    }
+
+    @Override
+    public void deleteTag(Long id, boolean force) {
+        if (inUse(id) && !force) {
+            throw new AppException("tag.errors.in-use");
+        }
+
+        getTag(id).ifPresent(Tag::delete);
     }
 }

@@ -2,6 +2,7 @@ package art.ameliah.ehb.anki.api.models.account;
 
 import art.ameliah.ehb.anki.api.exceptions.AppException;
 import art.ameliah.ehb.anki.api.models.deck.Deck;
+import art.ameliah.ehb.anki.api.models.tags.Tag;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.ebean.Model;
 import io.ebean.annotation.NotNull;
@@ -20,7 +21,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @Getter
 @Builder
@@ -49,11 +49,23 @@ public class User extends Model implements UserDetails {
     @OneToMany(mappedBy = "user")
     List<Deck> decks;
 
+    @OneToMany(mappedBy = "user")
+    List<Tag> tags;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
                 .map(role -> (GrantedAuthority) role::getName) // Return role names as authorities
                 .toList();
+    }
+
+    public boolean isAdmin() {
+        for (Role role : roles) {
+            if (role.getName().equals("ADMIN")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static User current() {

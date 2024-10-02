@@ -1,15 +1,20 @@
 package art.ameliah.ehb.anki.api.controllers;
 
 import art.ameliah.ehb.anki.api.dtos.tags.CreateTagDto;
+import art.ameliah.ehb.anki.api.exceptions.UnAuthorized;
+import art.ameliah.ehb.anki.api.models.account.User;
 import art.ameliah.ehb.anki.api.models.tags.Tag;
 import art.ameliah.ehb.anki.api.services.model.ITagService;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,7 +30,7 @@ public class TagController {
 
     @PostMapping
     public Tag createTag(@RequestBody CreateTagDto tag) {
-        return tagService.createTag(tag.getName(), tag.getHexColour());
+        return tagService.createTag(User.current(), tag.getName(), tag.getHexColour());
     }
 
     @GetMapping
@@ -51,6 +56,16 @@ public class TagController {
         return tagService.getTags(prefix);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteTag(@PathVariable Long id, @Nullable @RequestParam Boolean force) {
+        Tag tag = tagService.getTag(id).orElseThrow();
 
+        force = force != null && force && User.current().isAdmin();
+        if (!tag.getUser().getId().equals(User.current().getId()) && !force) {
+            throw new UnAuthorized();
+        }
+
+        tagService.deleteTag(id, force);
+    }
 
 }

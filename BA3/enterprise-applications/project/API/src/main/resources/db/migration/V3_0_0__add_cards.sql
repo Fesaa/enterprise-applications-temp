@@ -2,7 +2,8 @@ CREATE TABLE "tag" (
     id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
     normalized_name VARCHAR NOT NULL,
-    hex_colour VARCHAR
+    hex_colour VARCHAR,
+    user_id BIGINT REFERENCES "user"(id)
 );
 
 CREATE INDEX
