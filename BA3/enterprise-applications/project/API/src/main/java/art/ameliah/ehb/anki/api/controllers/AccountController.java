@@ -4,8 +4,8 @@ import art.ameliah.ehb.anki.api.dtos.account.LoginDto;
 import art.ameliah.ehb.anki.api.dtos.account.LoginResponse;
 import art.ameliah.ehb.anki.api.dtos.account.RegisterDto;
 import art.ameliah.ehb.anki.api.models.account.User;
-import art.ameliah.ehb.anki.api.services.AccountService;
 import art.ameliah.ehb.anki.api.services.JwtService;
+import art.ameliah.ehb.anki.api.services.model.IAccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,13 +21,13 @@ import java.util.List;
 public class AccountController {
 
     private final JwtService jwtService;
-    private final AccountService accountService;
+    private final IAccountService accountService;
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginDto loginDto) {
         User user = accountService.login(loginDto);
         return LoginResponse.builder()
-                .username(user.getUsername())
+                .user(user)
                 .token(jwtService.createToken(user))
                 .build();
     }
@@ -36,7 +36,7 @@ public class AccountController {
     public LoginResponse register(@RequestBody RegisterDto registerDto) {
         User user = accountService.register(registerDto);
         return LoginResponse.builder()
-                .username(user.getUsername())
+                .user(user)
                 .token(jwtService.createToken(user))
                 .build();
     }

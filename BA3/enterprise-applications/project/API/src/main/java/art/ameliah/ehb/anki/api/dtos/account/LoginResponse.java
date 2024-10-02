@@ -1,5 +1,6 @@
 package art.ameliah.ehb.anki.api.dtos.account;
 
+import art.ameliah.ehb.anki.api.models.account.User;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -7,7 +8,7 @@ import lombok.Getter;
 @Builder
 public class LoginResponse {
 
-    String username;
+    User user;
     String token;
 
 }

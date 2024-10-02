@@ -54,6 +54,7 @@ public class JwtService {
         DecodedJWT decodedJWT = verifier.verify(token);
 
         User user = User.builder()
+                .username(decodedJWT.getSubject())
                 .id(decodedJWT.getClaim("id").asLong())
                 .roles(decodedJWT.getClaim("roles")
                         .asList(String.class)
