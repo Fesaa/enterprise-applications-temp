@@ -4,14 +4,11 @@ import art.ameliah.ehb.anki.api.models.account.User;
 import art.ameliah.ehb.anki.api.models.tags.Tag;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.ebean.Model;
-import io.ebean.annotation.JsonIgnore;
 import io.ebean.annotation.NotNull;
-import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

@@ -4,7 +4,7 @@ import art.ameliah.ehb.anki.api.middleware.JwtAuthFilter;
 import art.ameliah.ehb.anki.api.middleware.UserAuthenticationEntryPoint;
 import art.ameliah.ehb.anki.api.services.JwtService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,7 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-@Log
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor

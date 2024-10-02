@@ -2,12 +2,12 @@ package art.ameliah.ehb.anki.api.services;
 
 import art.ameliah.ehb.anki.api.services.model.IStringService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
 
-@Log
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StringService implements IStringService {

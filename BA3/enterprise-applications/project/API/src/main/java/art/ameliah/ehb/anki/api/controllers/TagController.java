@@ -7,7 +7,7 @@ import art.ameliah.ehb.anki.api.models.tags.Tag;
 import art.ameliah.ehb.anki.api.services.model.ITagService;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-@Log
+@Slf4j
 @RestController
 @RequestMapping("/tags")
 @RequiredArgsConstructor

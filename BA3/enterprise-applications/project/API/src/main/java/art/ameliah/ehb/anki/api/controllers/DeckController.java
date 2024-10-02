@@ -6,7 +6,7 @@ import art.ameliah.ehb.anki.api.models.deck.Deck;
 import art.ameliah.ehb.anki.api.models.tags.Tag;
 import art.ameliah.ehb.anki.api.services.DeckService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Log
+@Slf4j
 @RestController
 @RequestMapping("/deck")
 @RequiredArgsConstructor

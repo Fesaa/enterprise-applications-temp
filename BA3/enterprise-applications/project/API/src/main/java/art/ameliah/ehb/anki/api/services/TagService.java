@@ -7,13 +7,13 @@ import art.ameliah.ehb.anki.api.models.tags.query.QTag;
 import art.ameliah.ehb.anki.api.services.model.IStringService;
 import art.ameliah.ehb.anki.api.services.model.ITagService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Log
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TagService implements ITagService {

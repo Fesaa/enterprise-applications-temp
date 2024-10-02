@@ -3,20 +3,18 @@ package art.ameliah.ehb.anki.api.services;
 import art.ameliah.ehb.anki.api.dtos.account.LoginDto;
 import art.ameliah.ehb.anki.api.dtos.account.RegisterDto;
 import art.ameliah.ehb.anki.api.exceptions.AppException;
-import art.ameliah.ehb.anki.api.models.account.Role;
 import art.ameliah.ehb.anki.api.models.account.User;
 import art.ameliah.ehb.anki.api.models.account.query.QUser;
 import art.ameliah.ehb.anki.api.services.model.IAccountService;
 import lombok.AllArgsConstructor;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;
-import java.util.List;
 
-@Log
+@Slf4j
 @Service
 @AllArgsConstructor
 public class AccountService implements IAccountService {

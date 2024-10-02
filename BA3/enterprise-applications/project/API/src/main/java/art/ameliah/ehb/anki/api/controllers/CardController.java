@@ -1,11 +1,11 @@
 package art.ameliah.ehb.anki.api.controllers;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Log
+@Slf4j
 @RestController
 @RequestMapping("/cards")
 @RequiredArgsConstructor

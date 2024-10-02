@@ -5,16 +5,17 @@ import art.ameliah.ehb.anki.api.models.deck.Deck;
 import art.ameliah.ehb.anki.api.models.deck.query.QDeck;
 import art.ameliah.ehb.anki.api.services.model.IDeckService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Log
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DeckService implements IDeckService {
+
     @Override
     public Optional<Deck> getDeck(Long id) {
         return new QDeck().id.eq(id).findOneOrEmpty();
