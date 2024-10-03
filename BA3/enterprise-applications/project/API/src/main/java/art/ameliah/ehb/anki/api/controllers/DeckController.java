@@ -1,5 +1,6 @@
 package art.ameliah.ehb.anki.api.controllers;
 
+import art.ameliah.ehb.anki.api.annotations.BaseController;
 import art.ameliah.ehb.anki.api.dtos.deck.CreateDeckDto;
 import art.ameliah.ehb.anki.api.models.account.User;
 import art.ameliah.ehb.anki.api.models.deck.Deck;
@@ -11,12 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @Slf4j
-@RestController
+@BaseController
 @RequestMapping("/deck")
 @RequiredArgsConstructor
 public class DeckController {

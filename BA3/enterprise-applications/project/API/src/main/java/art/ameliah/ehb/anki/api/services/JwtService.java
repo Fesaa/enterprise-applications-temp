@@ -1,6 +1,6 @@
 package art.ameliah.ehb.anki.api.services;
 
-import art.ameliah.ehb.anki.api.exceptions.AppException;
+import art.ameliah.ehb.anki.api.exceptions.UnAuthorized;
 import art.ameliah.ehb.anki.api.models.account.Role;
 import art.ameliah.ehb.anki.api.models.account.User;
 import art.ameliah.ehb.anki.api.models.account.query.QUser;
@@ -11,17 +11,19 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
 import java.util.Date;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class JwtService {
@@ -63,6 +65,9 @@ public class JwtService {
                         .toList())
                 .build();
 
+        if (log.isTraceEnabled())
+            log.trace("User {} has following authorities {}", user.getUsername(), user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
+
         return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
     }
 
@@ -74,7 +79,7 @@ public class JwtService {
 
         User user = new QUser().id.eq(decodedJWT.getClaim("id").asLong())
                 .findOneOrEmpty()
-                .orElseThrow(() -> new AppException("Invalid token", HttpStatus.UNAUTHORIZED));
+                .orElseThrow(UnAuthorized::new);
 
         return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
     }

@@ -1,6 +1,6 @@
 package art.ameliah.ehb.anki.api.models.account;
 
-import art.ameliah.ehb.anki.api.exceptions.AppException;
+import art.ameliah.ehb.anki.api.exceptions.UnAuthorized;
 import art.ameliah.ehb.anki.api.models.deck.Deck;
 import art.ameliah.ehb.anki.api.models.tags.Tag;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -70,8 +70,8 @@ public class User extends Model implements UserDetails {
 
     public static User current() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal == null) {
-            throw new AppException("Unauthorized");
+        if (!(principal instanceof User)) {
+            throw new UnAuthorized();
         }
 
         return (User) principal;

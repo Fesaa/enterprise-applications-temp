@@ -52,6 +52,13 @@ public class TagService implements ITagService {
     }
 
     @Override
+    public List<Tag> getTags(User user) {
+        return new QTag()
+                .user.id.eq(user.getId())
+                .findList();
+    }
+
+    @Override
     public List<Tag> getTags(String prefix) {
         return new QTag()
                 .normalizedName.startsWith(stringService.normalize(prefix))

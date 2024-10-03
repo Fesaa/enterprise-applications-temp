@@ -1,5 +1,7 @@
 package art.ameliah.ehb.anki.api.controllers;
 
+import art.ameliah.ehb.anki.api.annotations.Admin;
+import art.ameliah.ehb.anki.api.annotations.BaseController;
 import art.ameliah.ehb.anki.api.dtos.tags.CreateTagDto;
 import art.ameliah.ehb.anki.api.exceptions.UnAuthorized;
 import art.ameliah.ehb.anki.api.models.account.User;
@@ -15,13 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Slf4j
-@RestController
+@BaseController
 @RequestMapping("/tags")
 @RequiredArgsConstructor
 public class TagController {
@@ -34,6 +35,12 @@ public class TagController {
     }
 
     @GetMapping
+    public List<Tag> getAllTagsForUser() {
+        return tagService.getTags(User.current());
+    }
+
+    @Admin
+    @GetMapping("/all")
     public List<Tag> getAllTags() {
         return tagService.getTags();
     }

@@ -1,5 +1,7 @@
 package art.ameliah.ehb.anki.api.controllers;
 
+import art.ameliah.ehb.anki.api.annotations.AllowAnonymous;
+import art.ameliah.ehb.anki.api.annotations.BaseController;
 import art.ameliah.ehb.anki.api.dtos.account.LoginDto;
 import art.ameliah.ehb.anki.api.dtos.account.LoginResponse;
 import art.ameliah.ehb.anki.api.dtos.account.RegisterDto;
@@ -14,12 +16,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @Slf4j
-@RestController
+@BaseController
 @RequestMapping("/account")
 @RequiredArgsConstructor
 public class AccountController {
@@ -27,6 +28,7 @@ public class AccountController {
     private final JwtService jwtService;
     private final IAccountService accountService;
 
+    @AllowAnonymous
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginDto loginDto) {
         User user = accountService.login(loginDto);
@@ -36,6 +38,7 @@ public class AccountController {
                 .build();
     }
 
+    @AllowAnonymous
     @PostMapping("/register")
     public LoginResponse register(@RequestBody RegisterDto registerDto) {
         User user = accountService.register(registerDto);

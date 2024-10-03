@@ -14,6 +14,7 @@ public interface ITagService {
     boolean inUse(Long id);
 
     List<Tag> getTags();
+    List<Tag> getTags(User user);
     List<Tag> getTags(String prefix);
 
     Tag createTag(User user, String name);
