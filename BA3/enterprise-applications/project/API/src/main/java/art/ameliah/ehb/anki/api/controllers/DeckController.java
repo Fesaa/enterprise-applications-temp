@@ -21,7 +21,7 @@ import java.util.List;
 
 @Slf4j
 @BaseController
-@RequestMapping("/deck")
+@RequestMapping("/api/deck")
 @RequiredArgsConstructor
 public class DeckController {
 

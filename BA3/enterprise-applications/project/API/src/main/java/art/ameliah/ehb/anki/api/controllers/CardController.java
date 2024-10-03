@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @BaseController
-@RequestMapping("/cards")
+@RequestMapping("/api/cards")
 @RequiredArgsConstructor
 public class CardController {
 

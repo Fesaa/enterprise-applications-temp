@@ -23,7 +23,7 @@ import java.util.NoSuchElementException;
 
 @Slf4j
 @BaseController
-@RequestMapping("/tags")
+@RequestMapping("/api/tags")
 @RequiredArgsConstructor
 public class TagController {
 
