@@ -1,5 +1,6 @@
 package art.ameliah.ehb.anki.api.models.deck;
 
+import art.ameliah.ehb.anki.api.models.Ownable;
 import art.ameliah.ehb.anki.api.models.account.User;
 import art.ameliah.ehb.anki.api.models.tags.Tag;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -10,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -25,7 +27,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"user"})
-public class Deck extends Model {
+public class Deck extends Model implements Ownable {
+
+    public Deck(Long id) {
+        this.id = id;
+    }
 
     @Id
     Long id;
@@ -38,7 +44,7 @@ public class Deck extends Model {
     @ManyToOne(optional = false)
     User user;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     List<Card> cards;
 
     @ManyToMany
@@ -49,4 +55,8 @@ public class Deck extends Model {
     )
     List<Tag> tags;
 
+    @Override
+    public User owner() {
+        return user;
+    }
 }

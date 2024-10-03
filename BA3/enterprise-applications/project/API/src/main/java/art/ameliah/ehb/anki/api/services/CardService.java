@@ -31,8 +31,13 @@ public class CardService implements ICardService {
     }
 
     @Override
-    public Card createCard(Card card) {
+    public Card create(Card card) {
         card.save();
         return card;
+    }
+
+    @Override
+    public void delete(Card card) {
+        card.delete();
     }
 }

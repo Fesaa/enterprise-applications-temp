@@ -25,7 +25,7 @@ CREATE TABLE "card" (
   question VARCHAR NOT NULL,
   hint VARCHAR,
   information VARCHAR,
-  deck_id BIGINT REFERENCES "deck"(id)
+  deck_id BIGINT NOT NULL REFERENCES "deck"(id)
 );
 
 CREATE TABLE "pivot_deck_tags" (

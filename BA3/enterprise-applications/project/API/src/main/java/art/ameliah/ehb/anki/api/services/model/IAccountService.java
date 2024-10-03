@@ -14,4 +14,6 @@ public interface IAccountService {
 
     User getUser(String username);
 
+    boolean anyAccount();
+
 }

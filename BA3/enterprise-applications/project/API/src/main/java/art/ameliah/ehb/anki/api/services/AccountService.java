@@ -61,4 +61,9 @@ public class AccountService implements IAccountService {
         return new QUser().username.equalTo(username).findOne();
     }
 
+    @Override
+    public boolean anyAccount() {
+        return new QUser().findCount() > 0;
+    }
+
 }

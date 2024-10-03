@@ -48,6 +48,12 @@ public class AccountController {
                 .build();
     }
 
+    @AllowAnonymous
+    @GetMapping("/has-any-account")
+    public boolean hasRegisteredAccount() {
+        return accountService.anyAccount();
+    }
+
     @GetMapping("/roles")
     public List<String> getRoles() {
         return SecurityContextHolder.getContext()

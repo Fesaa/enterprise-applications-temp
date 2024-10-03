@@ -13,7 +13,8 @@ public interface ICardService {
     List<Card> getCards(Deck deck);
     List<Card> getCards(Long deckId);
 
-    Card createCard(Card card);
+    Card create(Card card);
+    void delete(Card card);
 
 
 }

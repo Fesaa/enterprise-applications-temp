@@ -1,5 +1,6 @@
 package art.ameliah.ehb.anki.api.models.tags;
 
+import art.ameliah.ehb.anki.api.models.Ownable;
 import art.ameliah.ehb.anki.api.models.account.User;
 import art.ameliah.ehb.anki.api.models.deck.Deck;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -25,7 +26,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"user"})
-public class Tag extends Model {
+public class Tag extends Model implements Ownable {
 
     public Tag(Long id) {
         this.id = id;
@@ -53,4 +54,8 @@ public class Tag extends Model {
     @ManyToOne
     User user;
 
+    @Override
+    public User owner() {
+        return user;
+    }
 }

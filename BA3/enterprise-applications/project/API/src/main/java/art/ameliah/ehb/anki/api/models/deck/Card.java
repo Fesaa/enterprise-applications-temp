@@ -4,6 +4,7 @@ import io.ebean.Model;
 import io.ebean.annotation.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-@Getter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
