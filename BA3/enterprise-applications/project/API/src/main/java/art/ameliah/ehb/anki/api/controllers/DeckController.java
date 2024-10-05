@@ -2,6 +2,7 @@ package art.ameliah.ehb.anki.api.controllers;
 
 import art.ameliah.ehb.anki.api.annotations.BaseController;
 import art.ameliah.ehb.anki.api.dtos.deck.CreateDeckDto;
+import art.ameliah.ehb.anki.api.dtos.deck.DeckDto;
 import art.ameliah.ehb.anki.api.exceptions.UnAuthorized;
 import art.ameliah.ehb.anki.api.models.account.User;
 import art.ameliah.ehb.anki.api.models.deck.Deck;
@@ -10,6 +11,7 @@ import art.ameliah.ehb.anki.api.services.model.IDeckService;
 import art.ameliah.ehb.anki.api.services.model.ITagService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,7 @@ public class DeckController {
 
     private final IDeckService deckService;
     private final ITagService tagService;
+    private final ModelMapper modelMapper;
 
     @GetMapping
     public List<Deck> getDecks() {
@@ -34,16 +37,16 @@ public class DeckController {
     }
 
     @GetMapping("/{id}")
-    public Deck getDeck(@PathVariable Long id) {
+    public DeckDto getDeck(@PathVariable Long id) {
         Deck deck = deckService.getDeck(id).orElseThrow();
         if (!deck.isOwner(User.current()))
             throw new UnAuthorized();
 
-        return deck;
+        return modelMapper.map(deck, DeckDto.class);
     }
 
     @PostMapping
-    public Deck createDeck(@RequestBody CreateDeckDto createDeckDto) {
+    public DeckDto createDeck(@RequestBody CreateDeckDto createDeckDto) {
         User user = User.current();
         Deck deck = Deck.builder()
                 .title(createDeckDto.getTitle())
@@ -52,7 +55,7 @@ public class DeckController {
                 .user(user)
                 .build();
 
-        return deckService.create(deck);
+        return modelMapper.map(deckService.create(deck), DeckDto.class);
     }
 
     @DeleteMapping("/{id}")

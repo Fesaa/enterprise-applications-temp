@@ -3,6 +3,7 @@ package art.ameliah.ehb.anki.api.controllers;
 import art.ameliah.ehb.anki.api.annotations.Admin;
 import art.ameliah.ehb.anki.api.annotations.BaseController;
 import art.ameliah.ehb.anki.api.dtos.tags.CreateTagDto;
+import art.ameliah.ehb.anki.api.dtos.tags.TagDto;
 import art.ameliah.ehb.anki.api.exceptions.UnAuthorized;
 import art.ameliah.ehb.anki.api.models.account.User;
 import art.ameliah.ehb.anki.api.models.tags.Tag;
@@ -10,6 +11,7 @@ import art.ameliah.ehb.anki.api.services.model.ITagService;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,39 +30,50 @@ import java.util.NoSuchElementException;
 public class TagController {
 
     private final ITagService tagService;
+    private final ModelMapper modelMapper;
 
     @PostMapping
-    public Tag createTag(@RequestBody CreateTagDto tag) {
-        return tagService.createTag(User.current(), tag.getName(), tag.getHexColour());
+    public TagDto createTag(@RequestBody CreateTagDto tag) {
+        Tag t = tagService.createTag(User.current(), tag.getName(), tag.getHexColour());
+        return modelMapper.map(t, TagDto.class);
     }
 
     @GetMapping
-    public List<Tag> getAllTagsForUser() {
-        return tagService.getTags(User.current());
+    public List<TagDto> getAllTagsForUser() {
+        return tagService.getTags(User.current())
+                .stream()
+                .map(t -> modelMapper.map(t, TagDto.class))
+                .toList();
     }
 
     @Admin
     @GetMapping("/all")
-    public List<Tag> getAllTags() {
-        return tagService.getTags();
+    public List<TagDto> getAllTags() {
+        return tagService.getTags()
+                .stream()
+                .map(t -> modelMapper.map(t, TagDto.class))
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public Tag getTagById(@PathVariable Long id) {
+    public TagDto getTagById(@PathVariable Long id) {
         if (id == null) {
             throw new NoSuchElementException();
         }
 
-        return tagService.getTag(id).orElseThrow();
+        return modelMapper.map(tagService.getTag(id).orElseThrow(), TagDto.class);
     }
 
     @GetMapping("/fuzzy/{prefix}")
-    public List<Tag> getFuzzyTags(@PathVariable String prefix) {
+    public List<TagDto> getFuzzyTags(@PathVariable String prefix) {
         if (prefix == null) {
             throw new NoSuchElementException();
         }
 
-        return tagService.getTags(prefix);
+        return tagService.getTags(prefix)
+                .stream()
+                .map(t -> modelMapper.map(t, TagDto.class))
+                .toList();
     }
 
     @DeleteMapping("/{id}")
