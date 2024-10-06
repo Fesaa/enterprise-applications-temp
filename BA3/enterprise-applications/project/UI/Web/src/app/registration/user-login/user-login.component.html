@@ -12,7 +12,7 @@
           class="w-full rounded-lg bg-white shadow sm:max-w-md md:mt-0 xl:p-0 dark:border dark:border-gray-700 dark:bg-gray-800">
           <div class="space-y-4 p-6 sm:p-8 md:space-y-6">
             <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Sign in
+              {{ mode == Mode.REGISTER ? "Register" : "Sign in" }}
             </h1>
 
             <form [formGroup]="loginForm" (ngSubmit)="submit()" class="space-y-4 md:space-y-6">
@@ -22,7 +22,7 @@
                   for="username"
                   class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  username
+                  Username
                 </label>
                 <input
                   type="text"
