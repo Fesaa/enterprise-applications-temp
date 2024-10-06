@@ -1,0 +1,59 @@
+@if (isLoading) {
+  <div class='flex space-x-2 justify-center items-center bg-gray-50 dark:bg-gray-900'>
+    <span class='sr-only'>Loading...</span>
+    <div class='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+    <div class='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+    <div class='h-4 w-4 bg-black rounded-full animate-bounce'></div>
+  </div>
+} @else {
+  <div class="flex mt-5 justify-center h-full bg-gray-50"> <!-- Center the form vertically and horizontally -->
+    <form (ngSubmit)="onSubmit()" #tagForm="ngForm" class="space-y-4 w-full max-w-2xl"> <!-- Limit the form width -->
+      <div>
+        <label for="title" class="block text-gray-700">Title</label>
+        <input
+          id="title"
+          name="title"
+          type="text"
+          required
+          [(ngModel)]="deck.title"
+          class="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-gray-100 text-gray-800 focus:border-blue-500 focus:ring focus:ring-blue-500"
+          placeholder="Enter title"
+        />
+      </div>
+
+      <div>
+        <label for="description" class="block text-gray-700">Description</label>
+        <textarea
+          id="description"
+          name="description"
+          required
+          [(ngModel)]="deck.description"
+          rows="4"
+          class="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-gray-100 text-gray-800 focus:border-blue-500 focus:ring focus:ring-blue-500"
+          placeholder="Enter description"
+        ></textarea>
+      </div>
+
+      <div class="w-full flex flex-row justify-center">
+        <div class="w-full"> <!-- Make the dropdown component responsive -->
+          <app-drop-and-create
+            [equals]="tagEquals"
+            [options]="possibleTags"
+            [mapper]="mapper"
+            [create]="createTag()"
+            [selected]="deck.tags"
+            (selectedUpdater)="onSelectedTagsUpdate($event)"
+          />
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="mt-2 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300"
+      >
+        Save
+      </button>
+    </form>
+  </div>
+
+}

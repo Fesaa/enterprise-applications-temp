@@ -8,3 +8,9 @@ export interface Deck {
   cards: Card[];
   tags: Tag[];
 }
+
+export interface UpdateDeck {
+  title: string;
+  description: string;
+  tags: number[];
+}

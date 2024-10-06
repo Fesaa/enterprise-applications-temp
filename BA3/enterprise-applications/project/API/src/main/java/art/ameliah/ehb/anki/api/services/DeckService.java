@@ -59,14 +59,20 @@ public class DeckService implements IDeckService {
     }
 
     @Override
-    public void addTag(Deck deck, Tag tag) {
-        deck.getTags().add(tag);
+    public void addTag(Deck deck, List<Tag> tags) {
+        deck.getTags().addAll(tags);
         deck.save();
     }
 
     @Override
-    public void removeTag(Deck deck, Tag tag) {
-        deck.getTags().remove(tag);
+    public void removeTag(Deck deck, List<Tag> tags) {
+        deck.getTags().removeAll(tags);
+        deck.save();
+    }
+
+    @Override
+    public void setTags(Deck deck, List<Tag> tags) {
+        deck.setTags(tags);
         deck.save();
     }
 }

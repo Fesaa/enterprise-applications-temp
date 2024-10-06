@@ -1,1 +1,44 @@
-<p>dashboard works!</p>
+@if (this.isLoading) {
+  <div class='flex space-x-2 justify-center items-center bg-gray-50 dark:bg-gray-900'>
+    <span class='sr-only'>Loading...</span>
+    <div class='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+    <div class='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+    <div class='h-4 w-4 bg-black rounded-full animate-bounce'></div>
+  </div>
+} @else {
+  <div class="flex justify-center flex-grow h-full w-full">
+
+    @if (decks.length > 0) {
+      <div class="m-5">
+        <div class="grid grid-cols-4 space-x-2">
+          @for (deck of decks; track deck.id) {
+            <div class="w-full pt-1 md:pt-5">
+              <app-deck-preview [deck]="deck"></app-deck-preview>
+            </div>
+          }
+        </div>
+
+        <div class="flex flex-col items-center justify-center pt-5 space-y-5" [@dropDown]>
+          <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200 dropdown-item">
+            Not the deck you were looking for?
+          </h1>
+          <h2 class="text-xl text-gray-500 dark:text-gray-400 dropdown-item">
+            Set some more up <a [routerLink]="'/manage/deck'" class="hover:underline hover:text-blue-400" > here</a>!
+          </h2>
+        </div>
+
+      </div>
+    } @else {
+      <div class="flex flex-col items-center justify-center pt-5 space-y-5" [@dropDown]>
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200 dropdown-item">
+          You currently have no decks
+        </h1>
+        <h2 class="text-xl text-gray-500 dark:text-gray-400 dropdown-item">
+          Set some up <a [routerLink]="'/manage/deck'" class="hover:underline hover:text-blue-400" > here</a>!
+        </h2>
+      </div>
+
+    }
+
+  </div>
+}

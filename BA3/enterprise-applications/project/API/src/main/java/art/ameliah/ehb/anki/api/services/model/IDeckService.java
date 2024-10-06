@@ -18,9 +18,20 @@ public interface IDeckService {
     Deck create(Deck deck);
     void delete(Deck deck);
 
-    void addTag(Deck deck, Tag tag);
-    void removeTag(Deck deck, Tag tag);
+    void addTag(Deck deck, List<Tag> tags);
+    void removeTag(Deck deck, List<Tag> tags);
+    void setTags(Deck deck, List<Tag> tags);
 
+    default void addTag(Deck deck, Tag... tag) {
+        addTag(deck, List.of(tag));
+    }
 
+    default void removeTag(Deck deck, Tag... tag) {
+        removeTag(deck, List.of(tag));
+    }
+
+    default void setTag(Deck deck, Tag... tag) {
+        setTags(deck, List.of(tag));
+    }
 
 }

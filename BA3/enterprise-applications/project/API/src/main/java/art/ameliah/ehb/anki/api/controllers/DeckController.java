@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -32,8 +34,11 @@ public class DeckController {
     private final ModelMapper modelMapper;
 
     @GetMapping
-    public List<Deck> getDecks() {
-        return deckService.getDecks(User.current());
+    public List<DeckDto> getDecks() {
+        return deckService.getDecks(User.current())
+                .stream()
+                .map(deck -> modelMapper.map(deck, DeckDto.class))
+                .toList();
     }
 
     @GetMapping("/{id}")
@@ -58,6 +63,24 @@ public class DeckController {
         return modelMapper.map(deckService.create(deck), DeckDto.class);
     }
 
+    @PostMapping("/{id}")
+    public DeckDto updateDeck(@PathVariable Long id, @RequestBody CreateDeckDto createDeckDto) {
+        Deck deck = deckService.getDeck(id).orElseThrow();
+        if (!deck.isOwner(User.current()))
+            throw new UnAuthorized();
+
+        if (createDeckDto.getTitle() != null)
+            deck.setTitle(createDeckDto.getTitle());
+
+        if (createDeckDto.getDescription() != null)
+            deck.setDescription(createDeckDto.getDescription());
+
+        deck.save();
+        List<Tag> tags = createDeckDto.getTags().stream().map(Tag::new).toList();
+        deckService.setTags(deck, tags);
+        return modelMapper.map(deck, DeckDto.class);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteDeck(@PathVariable Long id) {
         User user = User.current();
@@ -70,34 +93,36 @@ public class DeckController {
         deckService.delete(deck);
     }
 
-    @PostMapping("/{id}/tag/{tagId}")
-    public void addTag(@PathVariable Long id, @PathVariable Long tagId) {
+    @PostMapping("/{id}/tag")
+    public void addTag(@PathVariable Long id, @RequestBody Long[] tagIds) {
         Deck deck = deckService.getDeckLazy(id).orElseThrow();
         if (!deck.isOwner(User.current())) {
             throw new UnAuthorized();
         }
 
-        Tag tag = tagService.getTag(tagId).orElseThrow();
-        if (!tag.isOwner(User.current())) {
-            throw new UnAuthorized();
+        List<Tag> tags = new ArrayList<>();
+        for (Long tagId : tagIds) {
+            Tag tag = tagService.getTag(tagId).orElseThrow();
+            if (!tag.isOwner(User.current())) {
+                throw new UnAuthorized();
+            }
+            tags.add(tag);
         }
 
-        deckService.addTag(deck, tag);
+        deckService.addTag(deck, tags);
     }
 
-    @DeleteMapping("/{id}/tag/{tagId}")
-    public void deleteTag(@PathVariable Long id, @PathVariable Long tagId) {
+    @PostMapping("/{id}/tag/delete")
+    public void deleteTag(@PathVariable Long id, @RequestBody Long[] tagIds) {
         Deck deck = deckService.getDeckLazy(id).orElseThrow();
         if (!deck.isOwner(User.current())) {
             throw new UnAuthorized();
         }
 
-        Tag tag = tagService.getTag(tagId).orElseThrow();
-        if (!tag.isOwner(User.current())) {
-            throw new UnAuthorized();
-        }
-
-        deckService.removeTag(deck, tag);
+        List<Tag> tags = Arrays.stream(tagIds)
+                .map(Tag::new)
+                .toList();
+        deckService.removeTag(deck, tags);
     }
 
 }

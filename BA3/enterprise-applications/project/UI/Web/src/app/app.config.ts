@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {ApplicationConfig, importProvidersFrom, provideZoneChangeDetection} from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -8,6 +8,9 @@ import {provideAnimationsAsync} from "@angular/platform-browser/animations/async
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {AuthInterceptor} from "./_interceptors/auth-headers.interceptor";
 import {AuthRedirectInterceptor} from "./_interceptors/auth-redirect.interceptor";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {NgIconsModule} from "@ng-icons/core";
+import {heroPlus, heroXMark} from "@ng-icons/heroicons/outline";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,6 +29,10 @@ export const appConfig: ApplicationConfig = {
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthRedirectInterceptor, multi: true },
     provideHttpClient(withInterceptorsFromDi()),
+    importProvidersFrom(BrowserAnimationsModule, NgIconsModule.withIcons({
+      heroXMark,
+      heroPlus
+    })),
     provideAnimationsAsync()
   ]
 };

@@ -11,6 +11,10 @@ export const routes: Routes = [
         path: 'home',
         loadChildren: () => import('./_routes/dashboard.routes').then(m => m.routes)
       },
+      {
+        path: 'manage',
+        loadChildren: () => import('./_routes/manage.routes').then(m => m.routes)
+      },
       {path: '', pathMatch: 'full', redirectTo: 'home'},
     ]
   },
