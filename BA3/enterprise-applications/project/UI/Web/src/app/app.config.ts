@@ -10,7 +10,7 @@ import {AuthInterceptor} from "./_interceptors/auth-headers.interceptor";
 import {AuthRedirectInterceptor} from "./_interceptors/auth-redirect.interceptor";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {NgIconsModule} from "@ng-icons/core";
-import {heroPlus, heroXMark} from "@ng-icons/heroicons/outline";
+import {heroPlus, heroXMark, heroPencil, heroCheckBadge} from "@ng-icons/heroicons/outline";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -31,7 +31,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptorsFromDi()),
     importProvidersFrom(BrowserAnimationsModule, NgIconsModule.withIcons({
       heroXMark,
-      heroPlus
+      heroPlus,
+      heroPencil,
+      heroCheckBadge,
     })),
     provideAnimationsAsync()
   ]

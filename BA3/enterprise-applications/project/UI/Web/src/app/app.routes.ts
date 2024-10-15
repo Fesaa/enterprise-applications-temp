@@ -15,6 +15,10 @@ export const routes: Routes = [
         path: 'manage',
         loadChildren: () => import('./_routes/manage.routes').then(m => m.routes)
       },
+      {
+        path: 'deck',
+        loadChildren: () => import('./_routes/deck.routes').then(m => m.routes)
+      },
       {path: '', pathMatch: 'full', redirectTo: 'home'},
     ]
   },

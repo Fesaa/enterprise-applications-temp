@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Card, UpdateCard} from "../_models/card";
+import {Card, CreateCard} from "../_models/card";
 import {environment} from "../../environments/environment";
 
 @Injectable({
@@ -16,11 +16,11 @@ export class CardService {
     return this.httpClient.get<Card>(this.baseUrl + `cards/${id}`)
   }
 
-  update(id: number, model: UpdateCard) {
+  update(id: number, model: CreateCard) {
     return this.httpClient.post<Card>(this.baseUrl + `cards/${id}`, model)
   }
 
-  create(model: UpdateCard) {
+  create(model: CreateCard) {
     return this.httpClient.post<Card>(this.baseUrl + `cards`, model)
   }
 

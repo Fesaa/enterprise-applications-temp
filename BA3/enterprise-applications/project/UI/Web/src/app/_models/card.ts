@@ -19,3 +19,12 @@ export enum Difficulty {
   HARD,
   IMPOSSIBLE,
 }
+
+export interface CreateCard {
+  type: CardType;
+  difficulty: Difficulty;
+  question: string;
+  hint: string;
+  information: string;
+  deck: number;
+}
