@@ -7,7 +7,7 @@ import {CardType, Difficulty} from "../../_models/card";
 import {FormBuilder} from "@angular/forms";
 import {NgIcon} from "@ng-icons/core";
 import {DeckPreviewComponent} from "../../dashboard/_components/deck-preview/deck-preview.component";
-import {EditOrCreateCardComponent} from "../_components/edit-or-create-card/edit-or-create-card.component";
+import {PreviewCardComponent} from "../_components/edit-or-create-card/preview-card.component";
 
 @Component({
   selector: 'app-deck-overview',
@@ -16,7 +16,7 @@ import {EditOrCreateCardComponent} from "../_components/edit-or-create-card/edit
     RouterLink,
     NgIcon,
     DeckPreviewComponent,
-    EditOrCreateCardComponent
+    PreviewCardComponent
   ],
   templateUrl: './deck-overview.component.html',
   styleUrl: './deck-overview.component.css'
@@ -24,8 +24,8 @@ import {EditOrCreateCardComponent} from "../_components/edit-or-create-card/edit
 export class DeckOverviewComponent implements OnInit {
 
   deck?: Deck
-
-  editOrCreate = false
+  isMobile = false;
+  showDesc = false;
 
   constructor(private deckService: DeckService,
               private route: ActivatedRoute,
@@ -49,21 +49,11 @@ export class DeckOverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isMobile = window.innerWidth <= 768;
   }
 
-  toggleEditOrCreate() {
-    this.editOrCreate = !this.editOrCreate;
-  }
-
-  addNew() {
-    this.deck!.cards = [...this.deck!.cards, {
-      id: -1,
-      information: "",
-      question: "",
-      difficulty: Difficulty.EASY,
-      hint: "",
-      type: CardType.STANDARD,
-    }];
+  toggleDesc() {
+    this.showDesc = !this.showDesc;
   }
 
 }

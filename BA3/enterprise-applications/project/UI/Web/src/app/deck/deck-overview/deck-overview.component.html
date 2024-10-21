@@ -1,70 +1,67 @@
 @if (deck) {
 
   <div class="flex flex-col flex-grow h-full w-full">
-
-    <div class="flex flex-col p-5 w-full">
+    <div class="flex flex-col px-5 mt-5 w-full">
       <div class="flex flex-row justify-center items-center w-full">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 leading-tight mb-2 pb-4 relative w-full">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 leading-tight pb-4 relative w-full">
+          <div class="flex flex-col flex-wrap justify-between mt-2 space-x-2 md:px-28">
 
-          <div class="flex flex-wrap justify-between mt-2 space-x-2">
+            <span (click)="toggleDesc()" class="bg-clip-text text-2xl text-center text-transparent bg-gradient-to-r from-purple-500 to-pink-500 dark:from-purple-400 dark:to-pink-400">
+              {{ deck.title }}
+            </span>
 
-          <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500 dark:from-purple-400 dark:to-pink-400">
-            {{deck.title}}
-          </span>
+            <div class="w-full flex flex-col md:flex-row justify-between">
 
-            <div class="flex flex-row flex-wrap space-x-2">
-              @for (tag of deck.tags; track tag.id) {
-                <span class="bg-gray-200 text-black rounded-full px-3 py-1 text-sm font-semibold" [style.backgroundColor]="tag.hexColour">
-                {{ tag.name }}
-              </span>
-              }
-              <div class="hover:cursor-pointer" (click)="toggleEditOrCreate()">
-                @if (editOrCreate) {
-                  <ng-icon name="heroCheckBadge" size="32"></ng-icon>
-                } @else {
-                  <ng-icon name="heroPencil" size="32"></ng-icon>
+              <div class="flex flex-row justify-center md:justify-between flex-wrap space-x-2 mb-2">
+                @for (tag of deck.tags; track tag.id) {
+                  <div class="items-center flex">
+                    <span class="bg-gray-200 text-center text-black rounded-full px-3 py-1 text-sm font-semibold" [style.backgroundColor]="tag.hexColour">
+                      {{ tag.name }}
+                    </span>
+                  </div>
                 }
               </div>
+
+              <div class="flex flex-row justify-center flex-wrap space-x-2">
+                <span class="text-center text-black rounded-full px-3 py-1 font-bold bg-blue-300 text-2xl">
+                  <a [routerLink]="'/deck/' + deck.id + '/play'" class="hover:underline hover:cursor-pointer">Play!</a>
+                </span>
+              </div>
+
+
             </div>
           </div>
 
           <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500 dark:from-purple-400 dark:to-pink-400"></span>
         </h1>
       </div>
+
+      @if (!isMobile || this.showDesc) {
+        <div class="w-full text-center mt-5">
+          {{deck.description}}
+        </div>
+      }
+
     </div>
 
 
     @if (deck.cards.length > 0) {
-
-      <div class="m-5">
-        <div class="grid grid-cols-4 space-x-2">
+      <div class="mx-5">
+        <div class="flex flex-col md:grid md:grid-cols-2 md:gap-x-2">
           @for (card of deck.cards; track card.id) {
-            <div class="w-full pt-1 md:pt-5">
-              <app-edit-or-create-card [deck]="deck" [card]="card" [editMode]="editOrCreate" ></app-edit-or-create-card>
+            <div class="mt-2 md:mt-5">
+              <app-edit-or-create-card [deck]="deck" [card]="card"></app-edit-or-create-card>
             </div>
           }
         </div>
-
-        @if (editOrCreate) {
-          <div class="flex flex-col items-center justify-center pt-5 space-y-5" [@dropDown]>
-            <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200 dropdown-item">
-              Not the card you were looking for?
-            </h1>
-            <h2 class="text-xl text-gray-500 dark:text-gray-400 dropdown-item">
-              Set some more <span (click)="addNew()" class="hover:underline hover:cursor-pointer hover:text-blue-400" > up</span>!
-            </h2>
-          </div>
-        }
-
       </div>
-
     } @else {
       <div class="flex flex-col items-center justify-center pt-5 space-y-5" [@dropDown]>
         <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200 dropdown-item">
           This deck has no cards!
         </h1>
         <h2 class="text-xl text-gray-500 dark:text-gray-400 dropdown-item">
-          Set some <span (click)="addNew()" class="hover:underline hover:cursor-pointer hover:text-blue-400" > up</span>!
+          Set some <span class="hover:underline hover:cursor-pointer hover:text-blue-400"> up</span>!
         </h2>
       </div>
     }

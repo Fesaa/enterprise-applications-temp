@@ -9,15 +9,15 @@ export interface Card {
 }
 
 export enum CardType {
-  STANDARD,
-  MULTI,
+  STANDARD= "STANDARD",
+  MULTI = "MULTI",
 }
 
 export enum Difficulty {
-  EASY,
-  MEDIUM,
-  HARD,
-  IMPOSSIBLE,
+  EASY = "EASY",
+  MEDIUM = "MEDIUM",
+  HARD = "HARD",
+  IMPOSSIBLE = "IMPOSSIBLE",
 }
 
 export interface CreateCard {
