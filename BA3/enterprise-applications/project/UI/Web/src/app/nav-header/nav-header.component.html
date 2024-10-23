@@ -1,34 +1,32 @@
 @if (navService.showNav$ | async) {
-  <div class="bg-gray-800">
-    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+  <div class="bg-pink-500 shadow-lg rounded-lg mx-auto max-w-7xl">
+    <div class="px-4 sm:px-6 lg:px-8">
       <div class="relative flex h-16 items-center justify-between">
 
         <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
           <div class="hidden sm:block">
-            <div class="flex space-x-4">
+            <div class="flex space-x-6">
               <a
                 [routerLink]="['home']"
-                class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-                [ngClass]="{'bg-gray-900 text-white': false, 'text-gray-300 hover:bg-gray-700 hover:text-white' : true}"
+                class="text-white hover:bg-pink-600 hover:shadow-md transition duration-300 rounded-full px-4 py-2"
               >
                 Home
               </a>
 
-              <div class="overflow-x-auto flex space-x-4">
-
+              <div class="overflow-x-auto flex space-x-6">
               </div>
             </div>
           </div>
         </div>
 
-        <div class="inset-y-0 right-0 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 space-x-4 flex">
+        <div class="inset-y-0 right-0 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 flex space-x-4">
           <a
             [routerLink]="['settings']"
-            class="text-gray-300 text-sm font-medium hidden sm:block"
+            class="text-white text-sm font-medium hidden sm:block hover:bg-pink-600 hover:shadow-md transition duration-300 rounded-full px-4 py-2"
           >
             Settings
           </a>
-          <button class="text-gray-300 text-sm font-medium" (click)="accountService.logout()">
+          <button class="text-white text-sm font-medium hover:bg-pink-600 hover:shadow-md transition duration-300 rounded-full px-4 py-2" (click)="accountService.logout()">
             Logout
           </button>
         </div>

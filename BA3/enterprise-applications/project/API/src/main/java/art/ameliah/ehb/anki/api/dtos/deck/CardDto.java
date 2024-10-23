@@ -4,6 +4,8 @@ import art.ameliah.ehb.anki.api.models.deck.Card;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Setter
 @Getter
 public class CardDto {
@@ -19,5 +21,7 @@ public class CardDto {
     String hint;
 
     String information;
+
+    List<AnswerDto> answers;
 
 }

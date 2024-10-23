@@ -1,7 +1,6 @@
 @if (deck) {
-
-  <div class="flex flex-col flex-grow h-full w-full">
-    <div class="flex flex-col px-5 mt-5 w-full">
+  <div class="flex flex-col flex-grow h-full w-full px-5">
+    <div class="flex flex-col px-5 mt-5 w-full bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200">
       <div class="flex flex-row justify-center items-center w-full">
         <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 leading-tight pb-4 relative w-full">
           <div class="flex flex-col flex-wrap justify-between mt-2 space-x-2 md:px-28">
@@ -23,11 +22,10 @@
               </div>
 
               <div class="flex flex-row justify-center flex-wrap space-x-2">
-                <span class="text-center text-black rounded-full px-3 py-1 font-bold bg-blue-300 text-2xl">
+                <span class="text-center text-black rounded-full px-3 py-1 font-bold bg-pink-200 text-2xl">
                   <a [routerLink]="'/deck/' + deck.id + '/play'" class="hover:underline hover:cursor-pointer">Play!</a>
                 </span>
               </div>
-
 
             </div>
           </div>
@@ -44,9 +42,8 @@
 
     </div>
 
-
     @if (deck.cards.length > 0) {
-      <div class="mx-5">
+      <div class="mx-5 mt-5">
         <div class="flex flex-col md:grid md:grid-cols-2 md:gap-x-2">
           @for (card of deck.cards; track card.id) {
             <div class="mt-2 md:mt-5">
@@ -69,8 +66,8 @@
 } @else {
   <div class='flex space-x-2 justify-center items-center bg-gray-50 dark:bg-gray-900'>
     <span class='sr-only'>Loading...</span>
-    <div class='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
-    <div class='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
-    <div class='h-4 w-4 bg-black rounded-full animate-bounce'></div>
+    <div class='h-4 w-4 bg-pink-500 rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+    <div class='h-4 w-4 bg-pink-400 rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+    <div class='h-4 w-4 bg-pink-300 rounded-full animate-bounce'></div>
   </div>
 }

@@ -2,6 +2,7 @@ package art.ameliah.ehb.anki.api.models.deck;
 
 import io.ebean.Model;
 import io.ebean.annotation.NotNull;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -41,6 +45,9 @@ public class Card extends Model {
 
     @NotNull
     String information;
+
+    @OneToMany
+    List<Answer> answers;
 
     @ManyToOne
     Deck deck;

@@ -1,16 +1,15 @@
 @if (this.isLoading) {
-  <div class='flex space-x-2 justify-center items-center bg-gray-50 dark:bg-gray-900'>
+  <div class='flex space-x-2 justify-center items-center bg-gray-50 dark:bg-gray-900 py-4'>
     <span class='sr-only'>Loading...</span>
-    <div class='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
-    <div class='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
-    <div class='h-4 w-4 bg-black rounded-full animate-bounce'></div>
+    <div class='h-4 w-4 bg-pink-500 rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+    <div class='h-4 w-4 bg-pink-400 rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+    <div class='h-4 w-4 bg-pink-300 rounded-full animate-bounce'></div>
   </div>
 } @else {
-  <div class="flex justify-center flex-grow h-full w-full">
-
+  <div class="flex justify-center flex-grow h-full w-full px-4 sm:px-6 lg:px-8">
     @if (decks.length > 0) {
       <div class="m-5">
-        <div class="grid grid-cols-4 space-x-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           @for (deck of decks; track deck.id) {
             <div class="w-full pt-1 md:pt-5">
               <app-deck-preview [deck]="deck"></app-deck-preview>

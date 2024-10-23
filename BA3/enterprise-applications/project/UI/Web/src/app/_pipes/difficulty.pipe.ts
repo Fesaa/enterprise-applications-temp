@@ -8,7 +8,6 @@ import {Difficulty} from "../_models/card";
 export class DifficultyPipe implements PipeTransform {
 
   transform(value: Difficulty): string {
-    console.log(value)
     switch (value) {
       case Difficulty.EASY:
         return "easy"

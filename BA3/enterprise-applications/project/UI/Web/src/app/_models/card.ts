@@ -6,6 +6,7 @@ export interface Card {
   question: string;
   hint?: string;
   information: string;
+  answers: {id: number, answer: string, correct: boolean}[];
 }
 
 export enum CardType {
