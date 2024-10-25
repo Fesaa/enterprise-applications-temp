@@ -3,13 +3,13 @@ import {DeckService} from "../../_services/deck.service";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {Deck} from "../../_models/deck";
 import {NavService} from "../../_services/nav.service";
-import {FormBuilder} from "@angular/forms";
 import {NgIcon} from "@ng-icons/core";
 import {DeckPreviewComponent} from "../../dashboard/_components/deck-preview/deck-preview.component";
 import {PreviewCardComponent} from "../_components/edit-or-create-card/preview-card.component";
 import {Session} from "../../_models/session";
 import {SessionService} from "../../_services/session.service";
 import {DatePipe} from "@angular/common";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-deck-overview',
@@ -35,7 +35,7 @@ export class DeckOverviewComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private navService: NavService,
-              private fb: FormBuilder,
+              private toastR: ToastrService,
               private sessionService: SessionService,
   ) {
     this.navService.setNavVisibility(true);

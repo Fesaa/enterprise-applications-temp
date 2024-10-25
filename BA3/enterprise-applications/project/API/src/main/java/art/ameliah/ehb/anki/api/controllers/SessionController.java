@@ -3,6 +3,7 @@ package art.ameliah.ehb.anki.api.controllers;
 import art.ameliah.ehb.anki.api.annotations.BaseController;
 import art.ameliah.ehb.anki.api.dtos.session.SessionDto;
 import art.ameliah.ehb.anki.api.dtos.session.SubmitAnswerDto;
+import art.ameliah.ehb.anki.api.exceptions.AppException;
 import art.ameliah.ehb.anki.api.exceptions.UnAuthorized;
 import art.ameliah.ehb.anki.api.models.account.User;
 import art.ameliah.ehb.anki.api.models.deck.Answer;
@@ -95,6 +96,10 @@ public class SessionController {
         User user = User.current();
         Deck deck = this.deckService.getDeck(deckID).orElseThrow();
         deck.assertOwner(user);
+
+        if (deck.getCards().isEmpty()) {
+            throw new AppException("Cannot start session for a deck with no cards");
+        }
 
         Optional<Session> existing = this.sessionService.getSession(user, deck);
         return existing.map(this::mapSession)

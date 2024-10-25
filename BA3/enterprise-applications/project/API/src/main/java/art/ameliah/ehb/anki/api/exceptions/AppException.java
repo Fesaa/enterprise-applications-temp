@@ -7,9 +7,11 @@ import org.springframework.http.HttpStatus;
 public class AppException extends RuntimeException {
 
     private final HttpStatus status;
+    private final String message;
 
     public AppException(String msg, HttpStatus status) {
         super(msg);
+        this.message = msg;
         this.status = status;
     }
 
@@ -20,6 +22,7 @@ public class AppException extends RuntimeException {
     public AppException(String msg, HttpStatus status, Throwable cause) {
         super(msg, cause);
         this.status = status;
+        this.message = msg;
     }
 
     public AppException(String msg, Throwable cause) {

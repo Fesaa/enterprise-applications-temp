@@ -72,6 +72,11 @@ export class DeckPlayComponent implements OnInit {
 
         this.deckService.get(deckId).subscribe(deck => {
           this.deck = deck;
+          if (this.deck.cards.length === 0) {
+            this.toastR.info("Cannot play deck, no cards configured.");
+            this.router.navigateByUrl("/deck/" + deckId)
+            return;
+          }
         })
         return
       }

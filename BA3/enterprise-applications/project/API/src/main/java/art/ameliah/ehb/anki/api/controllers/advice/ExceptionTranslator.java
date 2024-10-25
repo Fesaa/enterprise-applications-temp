@@ -1,5 +1,6 @@
 package art.ameliah.ehb.anki.api.controllers.advice;
 
+import art.ameliah.ehb.anki.api.dtos.ExceptionDto;
 import art.ameliah.ehb.anki.api.exceptions.AppException;
 import art.ameliah.ehb.anki.api.exceptions.UnAuthorized;
 import lombok.extern.slf4j.Slf4j;
@@ -39,14 +40,14 @@ public class ExceptionTranslator {
     public ResponseEntity<?> handleDatabaseException(SQLException e) {
         String code = generateCode(e.getClass());
         log.error(LOG_FORMAT.formatted(code, e.getClass(), e.getMessage()), e);
-        return ResponseEntity.internalServerError().body(code);
+        return ResponseEntity.internalServerError().body(new ExceptionDto(code, e.getClass().getSimpleName(), e.getMessage()));
     }
 
     @ExceptionHandler(value = { AppException.class })
     public ResponseEntity<?> handleGenericException(AppException e) {
         String code = generateCode(e.getClass());
         log.error(LOG_FORMAT.formatted(code, e.getClass(), e.getMessage()), e);
-        return ResponseEntity.internalServerError().body(code);
+        return ResponseEntity.internalServerError().body(new ExceptionDto(code, e.getClass().getSimpleName(), e.getMessage()));
     }
 
     @ExceptionHandler(value = { NoSuchElementException.class})
