@@ -105,10 +105,12 @@ export class DeckPlayComponent implements OnInit {
     this.sessionCorrect = this.session.answers.filter(a => a.correct).length;
     this.sessionIncorrect = this.session.answers.filter(a => !a.correct).length;
 
-    this.maxCards = this.session.deck.cards.length;
     this.cards = this.session.deck.cards.filter(c => {
       return this.session!.answers.find(a => a.cardId === c.id) === undefined
     });
+    this.cards = Shuffle(this.cards);
+
+    this.maxCards = this.session.deck.cards.length;
     this.progressOffset = this.maxCards - this.cards.length;
     if (this.session.finish !== null) {
       this.router.navigateByUrl(`/session/${this.session.id}/results`);
