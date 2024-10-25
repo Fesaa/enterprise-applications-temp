@@ -28,6 +28,8 @@ import {ToastrService} from "ngx-toastr";
 })
 export class DeckPlayComponent implements OnInit {
 
+  deck: Deck | null = null;
+
   session: Session | null = null;
   sessionCorrect: number = 0;
   sessionIncorrect: number = 0;
@@ -48,25 +50,29 @@ export class DeckPlayComponent implements OnInit {
     return this.sessionIncorrect + this._incorrect
   }
 
-  playing: boolean = false;
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private navService: NavService,
     private sessionService: SessionService,
     private toastR: ToastrService,
+    private deckService: DeckService,
   ) {
     this.navService.setNavVisibility(true);
 
     this.route.queryParams.subscribe(async (params) => {
       const sessionId = params['sessionId'];
       if (!sessionId) {
-        const success = await this.startNewSession();
-        if (!success) {
-          this.toastR.error("Failed to start a new session", "Error!")
+        const deckId = params['deckId'];
+        if (!deckId) {
+          this.toastR.error("no deckId passed, and no session.")
           this.router.navigateByUrl("/home");
+          return;
         }
+
+        this.deckService.get(deckId).subscribe(deck => {
+          this.deck = deck;
+        })
         return
       }
 
@@ -75,10 +81,15 @@ export class DeckPlayComponent implements OnInit {
   }
 
   private async startNewSession(): Promise<boolean> {
-    const queryParams = await firstValueFrom(this.route.queryParams);
-    const deckId = queryParams['deckId'];
-    if (!deckId) {
-      return Promise.resolve(false);
+    let deckId: any;
+    if (this.deck) {
+      deckId = this.deck.id;
+    } else {
+      const queryParams = await firstValueFrom(this.route.queryParams);
+      const deckId = queryParams['deckId'];
+      if (!deckId) {
+        return Promise.resolve(false);
+      }
     }
 
     return new Promise<boolean>((resolve, _) => {
@@ -125,8 +136,12 @@ export class DeckPlayComponent implements OnInit {
     return this.cards[this.progressIdx];
   }
 
-  start() {
-    this.playing = true;
+  async start() {
+    const success = await this.startNewSession();
+    if (!success) {
+      this.toastR.error("Failed to start session.");
+      this.router.navigateByUrl("/home");
+    }
   }
 
   answerCard(cardId: number, answer: string) {
