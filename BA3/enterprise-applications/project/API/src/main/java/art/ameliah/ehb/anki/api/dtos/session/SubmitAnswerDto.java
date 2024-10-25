@@ -5,14 +5,9 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class SessionAnswerDto {
-
-    Long id;
+public class SubmitAnswerDto {
 
     Long cardId;
-
     String answer;
-
-    Boolean correct;
 
 }

@@ -45,6 +45,14 @@ export class DeckResultComponent implements OnInit {
     })
   }
 
+  get correct() {
+    return this.session!.answers.filter(a => a.correct).length;
+  }
+
+  get incorrect() {
+    return this.session!.answers.filter(a => !a.correct).length;
+  }
+
 
   ngOnInit(): void {
   }

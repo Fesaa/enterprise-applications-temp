@@ -29,6 +29,8 @@ import {ToastrService} from "ngx-toastr";
 export class DeckPlayComponent implements OnInit {
 
   session: Session | null = null;
+  sessionCorrect: number = 0;
+  sessionIncorrect: number = 0;
 
   cards: Card[] = []
   maxCards: number = 0;
@@ -39,11 +41,11 @@ export class DeckPlayComponent implements OnInit {
   private _incorrect: number = 0;
 
   get correct(): number {
-    return this.session!.correct + this._correct
+    return this.sessionCorrect + this._correct
   }
 
   get incorrect(): number {
-    return this.session!.wrong + this._incorrect
+    return this.sessionIncorrect + this._incorrect
   }
 
   playing: boolean = false;
@@ -89,6 +91,9 @@ export class DeckPlayComponent implements OnInit {
 
   private setSession(session: Session): void {
     this.session = session;
+    this.sessionCorrect = this.session.answers.filter(a => a.correct).length;
+    this.sessionIncorrect = this.session.answers.filter(a => !a.correct).length;
+
     this.maxCards = this.session.deck.cards.length;
     this.cards = this.session.deck.cards.filter(c => {
       return this.session!.answers.find(a => a.cardId === c.id) === undefined
@@ -124,11 +129,10 @@ export class DeckPlayComponent implements OnInit {
     this.playing = true;
   }
 
-  answerCard(cardId: number, answerId: number | null, answer: string) {
+  answerCard(cardId: number, answer: string) {
     const model: TryAnswer = {
       cardId: cardId,
-      answerId: answerId,
-      userAnswer: answer
+      answer: answer
     }
     this.sessionService.answer(this.session!.id, model).subscribe({
       next: c => {

@@ -6,19 +6,16 @@ export type Session = {
   finish: Date;
   deck: Deck;
   answers: SessionAnswer[];
-  correct: number;
-  wrong: number;
 }
 
 export type SessionAnswer = {
   id: number;
   cardId: number;
-  answerId: number;
-  userAnswer: string;
+  answer: string;
+  correct: boolean;
 }
 
 export type TryAnswer = {
   cardId: number;
-  answerId: number | null;
-  userAnswer: string;
+  answer: string;
 }

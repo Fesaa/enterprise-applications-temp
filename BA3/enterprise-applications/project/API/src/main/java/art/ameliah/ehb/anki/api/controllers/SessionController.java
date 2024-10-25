@@ -1,12 +1,11 @@
 package art.ameliah.ehb.anki.api.controllers;
 
 import art.ameliah.ehb.anki.api.annotations.BaseController;
-import art.ameliah.ehb.anki.api.dtos.session.SessionAnswerDto;
 import art.ameliah.ehb.anki.api.dtos.session.SessionDto;
+import art.ameliah.ehb.anki.api.dtos.session.SubmitAnswerDto;
 import art.ameliah.ehb.anki.api.exceptions.UnAuthorized;
 import art.ameliah.ehb.anki.api.models.account.User;
 import art.ameliah.ehb.anki.api.models.deck.Answer;
-import art.ameliah.ehb.anki.api.models.deck.Card;
 import art.ameliah.ehb.anki.api.models.deck.Deck;
 import art.ameliah.ehb.anki.api.models.session.Session;
 import art.ameliah.ehb.anki.api.services.model.IAccountService;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
@@ -67,10 +65,7 @@ public class SessionController {
 
     // TODO: See if we can make this on SQL
     private SessionDto mapSession(Session session) {
-        SessionDto dto = modelMapper.map(session, SessionDto.class);
-        dto.setCorrect(this.sessionService.correct(session));
-        dto.setWrong(this.sessionService.incorrect(session));
-        return dto;
+        return modelMapper.map(session, SessionDto.class);
     }
 
     @PostMapping("/{deckID}")
@@ -97,33 +92,21 @@ public class SessionController {
     }
 
     @PostMapping("/{sessionId}/answer")
-    public boolean answerSession(@PathVariable Long sessionId, @RequestBody SessionAnswerDto dto) throws BadRequestException {
-        log.info("{}, {}, {}, {}", dto.getId(), dto.getCardId(), dto.getAnswerId(), dto.getUserAnswer());
+    public boolean answerSession(@PathVariable Long sessionId, @RequestBody SubmitAnswerDto dto) throws BadRequestException {
         User user = User.current();
         Session session = this.sessionService.getSession(sessionId).orElseThrow();
-        if (!session.isOwner(user)) {
-            throw new UnAuthorized();
-        }
+        session.assertOwner(user);
 
         if (session.getAnswers().stream().map(a -> a.getCard().getId()).toList().contains(dto.getCardId())) {
             log.debug("{} tried to userAnswer card {} again for session {}", user.getUsername(), dto.getCardId(), sessionId);
             throw new BadRequestException();
         }
 
-        Card card = session.getDeck().getCards()
-                .stream()
-                .filter(c -> c.getId().equals(dto.getCardId()))
-                .findFirst().orElseThrow();
+        Answer answer = this.answerService.tryAnswer(dto.getCardId(), dto.getAnswer()).orElse(null);
+        boolean correct = answer != null && answer.getCorrect();
+        this.sessionService.addAnswer(sessionId, dto.getCardId(), dto.getAnswer(), correct);
 
-        Answer answer = switch (card.getType()) {
-            case MULTI -> this.answerService.getAnswer(card, dto.getAnswerId()).orElse(null);
-            case STANDARD -> this.answerService.tryAnswer(card, dto.getUserAnswer()).orElse(null);
-        };
-        this.sessionService.addAnswer(sessionId, dto);
-        if (answer == null) {
-            return false;
-        }
-        return answer.getCorrect();
+        return correct;
     }
 
 }

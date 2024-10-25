@@ -41,10 +41,10 @@
         @if (card) {
           @switch (card.type) {
             @case (CardType.STANDARD) {
-              <app-standard-card [card]="card" (answerSubmitted)="answerCard(card.id, null, $event)"></app-standard-card>
+              <app-standard-card [card]="card" (answerSubmitted)="answerCard(card.id, $event)"></app-standard-card>
             }
             @case (CardType.MULTI) {
-              <app-multi-card [card]="card" (answersSubmitted)="answerCard(card.id, $event, '')"></app-multi-card>
+              <app-multi-card [card]="card" (answersSubmitted)="answerCard(card.id, $event)"></app-multi-card>
             }
           }
         } @else {

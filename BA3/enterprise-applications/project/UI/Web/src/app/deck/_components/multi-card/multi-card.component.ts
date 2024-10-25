@@ -16,7 +16,7 @@ import {ToastrService} from "ngx-toastr";
 })
 export class MultiCardComponent {
   @Input() card!: Card;
-  @Output() answersSubmitted: EventEmitter<number> = new EventEmitter<number>();
+  @Output() answersSubmitted: EventEmitter<string> = new EventEmitter<string>();
 
   showHint: boolean = false;
   selectedAnswer: number = -1;
@@ -38,7 +38,12 @@ export class MultiCardComponent {
       return;
     }
 
-    this.answersSubmitted.emit(this.selectedAnswer);
+    const answer = this.card.answers.find(a => a.id === this.selectedAnswer);
+    if (!answer) {
+      return;
+    }
+
+    this.answersSubmitted.emit(answer.answer);
     this.selectedAnswer = -1;
   }
 

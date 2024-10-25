@@ -40,17 +40,9 @@ public class AnswerService implements IAnswerService {
     }
 
     @Override
-    public Optional<Answer> getAnswer(Card card, Long answerId) {
+    public Optional<Answer> tryAnswer(Long cardId, String query) {
         return new QAnswer()
-                .card.id.eq(card.getId())
-                .id.eq(answerId)
-                .findOneOrEmpty();
-    }
-
-    @Override
-    public Optional<Answer> tryAnswer(Card card, String query) {
-        return new QAnswer()
-                .card.id.eq(card.getId())
+                .card.id.eq(cardId)
                 .answer.ieq(query)
                 .findOneOrEmpty();
     }

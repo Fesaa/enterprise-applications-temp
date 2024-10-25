@@ -1,8 +1,6 @@
 package art.ameliah.ehb.anki.api.services;
 
-import art.ameliah.ehb.anki.api.dtos.session.SessionAnswerDto;
 import art.ameliah.ehb.anki.api.models.account.User;
-import art.ameliah.ehb.anki.api.models.deck.Answer;
 import art.ameliah.ehb.anki.api.models.deck.Card;
 import art.ameliah.ehb.anki.api.models.deck.Deck;
 import art.ameliah.ehb.anki.api.models.session.Session;
@@ -11,17 +9,12 @@ import art.ameliah.ehb.anki.api.models.session.query.QSession;
 import art.ameliah.ehb.anki.api.models.session.query.QSessionAnswer;
 import art.ameliah.ehb.anki.api.services.model.ISessionService;
 import io.ebean.DB;
-import io.ebean.RawSql;
-import io.ebean.RawSqlBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,46 +79,12 @@ public class SessionService implements ISessionService {
     }
 
     @Override
-    public Integer correct(Session session) {
-        return new QSessionAnswer()
-                .session.id.eq(session.getId())
-                .answer.correct.isTrue()
-                .findCount();
-    }
-
-    @Override
-    public Integer incorrect(Session session) {
-        // UGHHH PLS
-        return DB.sqlQuery("SELECT COUNT(*) as count FROM \"sessionAnswers\" s LEFT JOIN answer a ON a.id = s.answer_id WHERE session_id = :sessionId AND (a.correct OR answer_id IS NULL)")
-                .setParameter("sessionId", session.getId())
-                .findOneOrEmpty().orElseThrow().getInteger("count");
-
-        // TODO: Investigate
-        // This doesn't seem to generate a LEFT JOIN, idk how to make it work with these ebeans
-        // Why are ORMs, so amazing, until they aren't huh...
-        /*return new QSessionAnswer()
-                .session.id.eq(session.getId())
-                .or()
-                    .answer.correct.isFalse()
-                    .answer.isNull()
-                .endOr()
-                .findCount();*/
-    }
-
-    @Override
-    public void addAnswer(Long sessionId, SessionAnswerDto answer) {
-        Session session = this.getSession(sessionId).orElseThrow();
-
-        SessionAnswer.SessionAnswerBuilder builder = SessionAnswer.builder()
-                .session(session)
-                .card(DB.reference(Card.class, answer.getCardId()))
-                .userAnswer(answer.getUserAnswer());
-
-        if (answer.getAnswerId() != null) {
-            builder.answer(DB.reference(Answer.class, answer.getAnswerId()));
-        }
-
-        SessionAnswer sessionAnswer = builder.build();
-        sessionAnswer.save();
+    public void addAnswer(Long sessionId, Long cardId, String answer, boolean correct) {
+        SessionAnswer.builder()
+                .session(DB.reference(Session.class, sessionId))
+                .card(DB.reference(Card.class, cardId))
+                .answer(answer)
+                .correct(correct)
+                .build().save();
     }
 }

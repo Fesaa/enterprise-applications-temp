@@ -1,6 +1,5 @@
 package art.ameliah.ehb.anki.api.models.session;
 
-import art.ameliah.ehb.anki.api.models.deck.Answer;
 import art.ameliah.ehb.anki.api.models.deck.Card;
 import io.ebean.Model;
 import jakarta.persistence.Entity;
@@ -29,9 +28,8 @@ public class SessionAnswer extends Model {
     @ManyToOne(optional = false)
     Card card;
 
-    @ManyToOne(optional = false)
-    Answer answer;
+    String answer;
 
-    String userAnswer;
+    Boolean correct;
 
 }

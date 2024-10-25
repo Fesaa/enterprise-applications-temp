@@ -6,9 +6,9 @@
     <p><strong>Start:</strong> {{ session.start | date: 'medium' }}</p>
     <p><strong>Finish:</strong> {{ session.finish | date: 'medium' }}</p>
     <p>Total Questions: {{ session.answers.length }}</p>
-    <p>Correct Answers: {{ session.correct }}</p>
-    <p>Incorrect Answers: {{ session.wrong }}</p>
-    <p>Score: {{ (session.correct / session.answers.length * 100) | number: '1.0-2' }}%</p>
+    <p>Correct Answers: {{ correct }}</p>
+    <p>Incorrect Answers: {{ incorrect }}</p>
+    <p>Score: {{ (correct / session.answers.length * 100) | number: '1.0-2' }}%</p>
   </div>
 
   <div class="mt-5 text-center">
