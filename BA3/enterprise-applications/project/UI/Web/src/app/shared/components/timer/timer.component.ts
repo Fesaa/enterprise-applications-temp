@@ -12,6 +12,7 @@ export class TimerComponent implements OnInit, OnDestroy {
   private timerId: any;
 
   ngOnInit() {
+    this.startDate = new Date(this.startDate);
     this.updateTimeElapsed();
     this.timerId = setInterval(() => this.updateTimeElapsed(), 1000);
   }

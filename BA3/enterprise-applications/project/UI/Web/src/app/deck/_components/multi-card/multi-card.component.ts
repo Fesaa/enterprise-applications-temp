@@ -16,10 +16,10 @@ import {ToastrService} from "ngx-toastr";
 })
 export class MultiCardComponent {
   @Input() card!: Card;
-  @Output() answersSubmitted: EventEmitter<number[]> = new EventEmitter<number[]>();
+  @Output() answersSubmitted: EventEmitter<number> = new EventEmitter<number>();
 
   showHint: boolean = false;
-  selectedAnswers: number[] = [];
+  selectedAnswer: number = -1;
 
   constructor(private toastR: ToastrService) {
   }
@@ -29,24 +29,20 @@ export class MultiCardComponent {
   }
 
   toggleAnswer(answerId: number) {
-    if (this.selectedAnswers.includes(answerId)) {
-      this.selectedAnswers = this.selectedAnswers.filter(id => id !== answerId);
-    } else {
-      this.selectedAnswers.push(answerId);
-    }
+    this.selectedAnswer = answerId;
   }
 
   submitAnswers() {
-    if (this.selectedAnswers.length === 0) {
-      this.toastR.error("Please select at least one answer!");
+    if (this.selectedAnswer === -1) {
+      this.toastR.error("Please select an answer!");
       return;
     }
 
-    this.answersSubmitted.emit(this.selectedAnswers);
-    this.selectedAnswers = [];
+    this.answersSubmitted.emit(this.selectedAnswer);
+    this.selectedAnswer = -1;
   }
 
   isSelected(answerId: number): boolean {
-    return this.selectedAnswers.includes(answerId);
+    return this.selectedAnswer === answerId;
   }
 }

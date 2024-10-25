@@ -1,10 +1,9 @@
 package art.ameliah.ehb.anki.api.models.account;
 
 import io.ebean.annotation.NotNull;
-import lombok.Getter;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.Getter;
 
 @Getter
 @Entity

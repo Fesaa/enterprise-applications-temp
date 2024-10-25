@@ -19,6 +19,10 @@ export const routes: Routes = [
         path: 'deck',
         loadChildren: () => import('./_routes/deck.routes').then(m => m.routes)
       },
+      {
+        path: 'session',
+        loadChildren: () => import('./_routes/session.routes').then(m => m.routes)
+      },
       {path: '', pathMatch: 'full', redirectTo: 'home'},
     ]
   },

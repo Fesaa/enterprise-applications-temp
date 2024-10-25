@@ -9,6 +9,10 @@ import {DeckPreviewComponent} from "../../dashboard/_components/deck-preview/dec
 import {TimerComponent} from "../../shared/components/timer/timer.component";
 import {StandardCardComponent} from "../_components/standard-card/standard-card.component";
 import {MultiCardComponent} from "../_components/multi-card/multi-card.component";
+import {Session, TryAnswer} from "../../_models/session";
+import {SessionService} from "../../_services/session.service";
+import {firstValueFrom} from "rxjs";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-deck-play',
@@ -22,49 +26,90 @@ import {MultiCardComponent} from "../_components/multi-card/multi-card.component
   templateUrl: './deck-play.component.html',
   styleUrl: './deck-play.component.css'
 })
-export class DeckPlayComponent implements OnInit{
+export class DeckPlayComponent implements OnInit {
 
-  deck: Deck | null = null;
+  session: Session | null = null;
+
   cards: Card[] = []
-
-  startTime: Date | null = null;
+  maxCards: number = 0;
+  progressOffset: number = 0;
   progressIdx: number = 0;
-  correct: number = 0;
-  mistakes: number = 0;
+
+  private _correct: number = 0;
+  private _incorrect: number = 0;
+
+  get correct(): number {
+    return this.session!.correct + this._correct
+  }
+
+  get incorrect(): number {
+    return this.session!.wrong + this._incorrect
+  }
+
+  playing: boolean = false;
 
   constructor(
-    private deckService: DeckService,
     private router: Router,
     private route: ActivatedRoute,
-    private cdRef: ChangeDetectorRef,
     private navService: NavService,
+    private sessionService: SessionService,
+    private toastR: ToastrService,
   ) {
     this.navService.setNavVisibility(true);
 
-    this.route.params.subscribe(params => {
-      const deckId = params['deckId'];
-      if (!deckId) {
-        this.router.navigateByUrl(`/home`)
+    this.route.queryParams.subscribe(async (params) => {
+      const sessionId = params['sessionId'];
+      if (!sessionId) {
+        const success = await this.startNewSession();
+        if (!success) {
+          this.toastR.error("Failed to start a new session", "Error!")
+          this.router.navigateByUrl("/home");
+        }
         return
       }
 
-      this.deckService.get(deckId).subscribe(deck => {
-        this.deck = deck;
+      this.sessionService.get(sessionId).subscribe(this.setSession)
+    })
+  }
 
-        this.cards = Shuffle(this.deck.cards);
+  private async startNewSession(): Promise<boolean> {
+    const queryParams = await firstValueFrom(this.route.queryParams);
+    const deckId = queryParams['deckId'];
+    if (!deckId) {
+      return Promise.resolve(false);
+    }
+
+    return new Promise<boolean>((resolve, _) => {
+      this.sessionService.create(deckId).subscribe(session => {
+        this.setSession(session);
+        resolve(true);
       })
     })
+  }
+
+  private setSession(session: Session): void {
+    this.session = session;
+    this.maxCards = this.session.deck.cards.length;
+    this.cards = this.session.deck.cards.filter(c => {
+      return this.session!.answers.find(a => a.cardId === c.id) === undefined
+    });
+    this.progressOffset = this.maxCards - this.cards.length;
+    if (this.session.finish !== null) {
+      this.router.navigateByUrl(`/session/${this.session.id}/results`);
+      return
+    }
+
+    if (this.maxCards === this.progressOffset) {
+      this.finishSession();
+      return;
+    }
   }
 
   ngOnInit(): void {
   }
 
-  get totalCards(): number {
-    return this.cards.length;
-  }
-
   get progress(): number {
-    return this.totalCards ? (this.progressIdx / this.totalCards) * 100 : 0;
+    return ((this.progressIdx + this.progressOffset) / this.maxCards) * 100;
   }
 
   currentCard(): Card | null {
@@ -76,36 +121,51 @@ export class DeckPlayComponent implements OnInit{
   }
 
   start() {
-    this.startTime = new Date();
+    this.playing = true;
   }
 
-  standardAnswer(cardId: number, answer: string) {
-    const card = this.cards.find(card => card.id === cardId)!;
-    const correct = card.answers.find(a => {
-      // TODO: Similar check
-      return a.correct && a.answer.toLowerCase() === answer.toLowerCase();
-    }) !== undefined;
-
-    this.makeProgress(correct);
-  }
-
-  multiAnswer(cardId: number, answers: number[]) {
-    const card = this.cards.find(card => card.id === cardId)!;
-    const correct = card.answers
-      .filter(a => answers.find(id => id === a.id) !== undefined)
-      .filter(a => a.correct).length === answers.length;
-
-    this.makeProgress(correct);
+  answerCard(cardId: number, answerId: number | null, answer: string) {
+    const model: TryAnswer = {
+      cardId: cardId,
+      answerId: answerId,
+      userAnswer: answer
+    }
+    this.sessionService.answer(this.session!.id, model).subscribe({
+      next: c => {
+        this.makeProgress(c)
+      },
+      error: error => {
+        console.log(error);
+      }
+    })
   }
 
   private makeProgress(correct: boolean) {
     if (correct) {
-      this.correct++;
+      this.toastR.success("Answer successful!");
+      this._correct++;
     } else {
-      this.mistakes++;
+      this.toastR.info("Answer wrong!");
+      this._incorrect++;
     }
 
     this.progressIdx++;
+
+    if (this.progressIdx >= this.cards.length) {
+      this.finishSession()
+    }
+  }
+
+  private finishSession() {
+    this.sessionService.finish(this.session!.id).subscribe({
+      next: _ => {
+        this.router.navigateByUrl(`/session/${this.session!.id}/results`);
+      },
+      error: error => {
+        console.log(error);
+        this.toastR.error("Error while trying to finish session", "error!");
+      }
+    })
   }
 
   protected readonly CardType = CardType;

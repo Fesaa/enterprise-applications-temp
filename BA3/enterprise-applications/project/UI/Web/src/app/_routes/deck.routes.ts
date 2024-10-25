@@ -8,7 +8,7 @@ export const routes: Routes = [
     component: DeckOverviewComponent
   },
   {
-    path: ':deckId/play',
+    path: ':sessionId/play',
     component: DeckPlayComponent,
   }
 ]

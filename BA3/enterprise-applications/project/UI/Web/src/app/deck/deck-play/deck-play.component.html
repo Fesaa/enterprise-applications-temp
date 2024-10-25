@@ -1,8 +1,12 @@
-@if (deck) {
-  @if (!startTime) {
+
+
+
+
+@if (session) {
+  @if (!playing) {
     <div class="w-full h-full flex flex-grow flex-col items-center">
       <div class="w-1/2 mt-5">
-        <app-deck-preview [deck]="deck"></app-deck-preview>
+        <app-deck-preview [deck]="session.deck"></app-deck-preview>
       </div>
       <button (click)="start()" class="px-4 py-2 rounded-lg bg-white shadow-xl mt-5 w-1/5 hover:shadow-2xl">
         Start
@@ -11,7 +15,7 @@
   } @else {
     <div class="w-full h-full flex flex-col flex-grow">
       <div class="h-1/12 flex flex-row justify-between items-center p-4">
-        <app-timer [startDate]="startTime"></app-timer>
+        <app-timer [startDate]="session.start"></app-timer>
 
         <!-- Correct and Mistakes Buttons -->
         <div class="flex space-x-4">
@@ -19,7 +23,7 @@
             Correct: {{ correct }}
           </button>
           <button class="px-4 py-2 rounded-lg bg-red-500 text-white shadow-lg hover:shadow-2xl">
-            Mistakes: {{ mistakes }}
+            Mistakes: {{ incorrect }}
           </button>
         </div>
       </div>
@@ -37,10 +41,10 @@
         @if (card) {
           @switch (card.type) {
             @case (CardType.STANDARD) {
-              <app-standard-card [card]="card" (answerSubmitted)="standardAnswer(card.id, $event)"></app-standard-card>
+              <app-standard-card [card]="card" (answerSubmitted)="answerCard(card.id, null, $event)"></app-standard-card>
             }
             @case (CardType.MULTI) {
-              <app-multi-card [card]="card" (answersSubmitted)="multiAnswer(card.id, $event)"></app-multi-card>
+              <app-multi-card [card]="card" (answersSubmitted)="answerCard(card.id, $event, '')"></app-multi-card>
             }
           }
         } @else {

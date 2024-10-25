@@ -23,7 +23,7 @@
 
               <div class="flex flex-row justify-center flex-wrap space-x-2">
                 <span class="text-center text-black rounded-full px-3 py-1 font-bold bg-pink-200 text-2xl">
-                  <a [routerLink]="'/deck/' + deck.id + '/play'" class="hover:underline hover:cursor-pointer">Play!</a>
+                  <a [routerLink]="['/session/play']" [queryParams]="{ deckId: deck.id }" class="hover:underline hover:cursor-pointer">Play!</a>
                 </span>
               </div>
 
