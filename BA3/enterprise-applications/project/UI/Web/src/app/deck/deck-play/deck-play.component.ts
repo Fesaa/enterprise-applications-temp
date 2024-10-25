@@ -76,7 +76,9 @@ export class DeckPlayComponent implements OnInit {
         return
       }
 
-      this.sessionService.get(sessionId).subscribe(this.setSession)
+      this.sessionService.get(sessionId).subscribe(session => {
+        this.setSession(session);
+      })
     })
   }
 
