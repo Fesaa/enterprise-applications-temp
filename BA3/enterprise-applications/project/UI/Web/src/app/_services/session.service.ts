@@ -20,6 +20,14 @@ export class SessionService {
     return this.httpClient.get<Session[]>(this.baseUrl + 'running');
   }
 
+  allByDeck(id: number) {
+    return this.httpClient.get<Session[]>(this.baseUrl + 'deck/' + id);
+  }
+
+  allRunningByDeck(id: number) {
+    return this.httpClient.get<Session[]>(this.baseUrl + 'deck/' + id + "/running");
+  }
+
   get(id: number) {
     return this.httpClient.get<Session>(this.baseUrl  + id);
   }

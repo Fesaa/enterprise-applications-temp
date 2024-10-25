@@ -35,7 +35,7 @@
       </div>
 
       @if (!isMobile || this.showDesc) {
-        <div class="w-full text-center mt-5">
+        <div class="w-full text-center my-5">
           {{deck.description}}
         </div>
       }
@@ -63,6 +63,46 @@
       </div>
     }
   </div>
+
+  @if (pastSessions.length > 0) {
+
+    <h1 class="w-full mt-5 px-12 text-xl font-bold">Sessions </h1>
+
+    <div class="w-full flex flex-col space-y-5 mt-5 px-16">
+
+      @for (session of pastSessions; track session.id) {
+        <div class="flex flex-row justify-between bg-white px-4 py-2 rounded-xl hover:shadow border border-gray-300">
+
+          <div class="flex flex-col space-y-2">
+            <span>Session #{{session.id}}</span>
+            <div>
+              From {{session.start | date}} to {{!session.finish ? 'running' : session.finish | date}}
+            </div>
+          </div>
+
+          @if (session.finish) {
+            <div class="flex-grow flex flex-col items-end justify-center">
+            <span class="text-center text-black rounded-full px-2 py-1 bg-pink-200">
+              <a [routerLink]="['/session/' + session.id + '/results']" class="hover:underline hover:cursor-pointer">Results!</a>
+            </span>
+            </div>
+          } @else {
+            <div class="flex-grow flex flex-col items-end justify-center">
+            <span class="text-center text-black rounded-full px-2 py-1 bg-pink-200">
+              <a [routerLink]="['/session/play']" [queryParams]="{ sessionId: session.id }" class="hover:underline hover:cursor-pointer">Continue!</a>
+            </span>
+            </div>
+          }
+
+
+        </div>
+      }
+
+    </div>
+  }
+
+
+
 } @else {
   <div class='flex space-x-2 justify-center items-center bg-gray-50 dark:bg-gray-900'>
     <span class='sr-only'>Loading...</span>

@@ -11,9 +11,11 @@ public interface ISessionService {
 
     List<Session> allSessions(User user);
     List<Session> allSessions(Long userId);
+    List<Session> allSessions(Deck deck);
 
     List<Session> runningSessions(User user);
     List<Session> runningSessions(Long userId);
+    List<Session> runningSessions(Deck deck);
 
     Optional<Session> getSession(User user, Deck deck);
     Optional<Session> getSession(Long sessionId);

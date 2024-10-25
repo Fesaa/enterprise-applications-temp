@@ -3,11 +3,13 @@ import {DeckService} from "../../_services/deck.service";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {Deck} from "../../_models/deck";
 import {NavService} from "../../_services/nav.service";
-import {CardType, Difficulty} from "../../_models/card";
 import {FormBuilder} from "@angular/forms";
 import {NgIcon} from "@ng-icons/core";
 import {DeckPreviewComponent} from "../../dashboard/_components/deck-preview/deck-preview.component";
 import {PreviewCardComponent} from "../_components/edit-or-create-card/preview-card.component";
+import {Session} from "../../_models/session";
+import {SessionService} from "../../_services/session.service";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-deck-overview',
@@ -16,7 +18,8 @@ import {PreviewCardComponent} from "../_components/edit-or-create-card/preview-c
     RouterLink,
     NgIcon,
     DeckPreviewComponent,
-    PreviewCardComponent
+    PreviewCardComponent,
+    DatePipe
   ],
   templateUrl: './deck-overview.component.html',
   styleUrl: './deck-overview.component.css'
@@ -24,6 +27,7 @@ import {PreviewCardComponent} from "../_components/edit-or-create-card/preview-c
 export class DeckOverviewComponent implements OnInit {
 
   deck?: Deck
+  pastSessions: Session[] = []
   isMobile = false;
   showDesc = false;
 
@@ -32,6 +36,7 @@ export class DeckOverviewComponent implements OnInit {
               private router: Router,
               private navService: NavService,
               private fb: FormBuilder,
+              private sessionService: SessionService,
   ) {
     this.navService.setNavVisibility(true);
 
@@ -44,6 +49,10 @@ export class DeckOverviewComponent implements OnInit {
 
       this.deckService.get(deckId).subscribe(deck => {
         this.deck = deck;
+
+        this.sessionService.allByDeck(deck.id).subscribe(sessions => {
+          this.pastSessions = sessions;
+        })
       })
     })
   }

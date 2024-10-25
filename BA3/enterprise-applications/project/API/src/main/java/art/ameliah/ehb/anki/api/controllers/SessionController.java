@@ -53,6 +53,28 @@ public class SessionController {
                 .toList();
     }
 
+    @GetMapping("/deck/{deckId}")
+    public List<SessionDto> getDeckSessions(@PathVariable Long deckId) {
+        User user = User.current();
+        Deck deck = this.deckService.getDeckLazy(deckId).orElseThrow();
+        deck.assertOwner(user);
+
+        return this.sessionService.allSessions(deck).stream()
+                .map(this::mapSession)
+                .toList();
+    }
+
+    @GetMapping("/deck/{deckId}/running")
+    public List<SessionDto> getRunningDeckSessions(@PathVariable Long deckId) {
+        User user = User.current();
+        Deck deck = this.deckService.getDeckLazy(deckId).orElseThrow();
+        deck.assertOwner(user);
+
+        return this.sessionService.runningSessions(deck).stream()
+                .map(this::mapSession)
+                .toList();
+    }
+
     @GetMapping("/{sessionId}")
     public SessionDto getSession(@PathVariable Long sessionId) {
         User user = User.current();

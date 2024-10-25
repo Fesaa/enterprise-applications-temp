@@ -23,8 +23,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SessionService implements ISessionService {
 
-    private final ModelMapper modelMapper;
-
     @Override
     public List<Session> allSessions(User user) {
         return this.allSessions(user.getId());
@@ -36,6 +34,11 @@ public class SessionService implements ISessionService {
     }
 
     @Override
+    public List<Session> allSessions(Deck deck) {
+        return new QSession().deck.id.eq(deck.getId()).findList();
+    }
+
+    @Override
     public List<Session> runningSessions(User user) {
         return this.runningSessions(user.getId());
     }
@@ -44,6 +47,14 @@ public class SessionService implements ISessionService {
     public List<Session> runningSessions(Long userId) {
         return new QSession()
                 .user.id.eq(userId)
+                .finish.isNull()
+                .findList();
+    }
+
+    @Override
+    public List<Session> runningSessions(Deck deck) {
+        return new QSession()
+                .deck.id.eq(deck.getId())
                 .finish.isNull()
                 .findList();
     }
