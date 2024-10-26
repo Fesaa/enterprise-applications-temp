@@ -5,7 +5,7 @@ import {Deck} from "../../_models/deck";
 import {NavService} from "../../_services/nav.service";
 import {NgIcon} from "@ng-icons/core";
 import {DeckPreviewComponent} from "../../dashboard/_components/deck-preview/deck-preview.component";
-import {PreviewCardComponent} from "../_components/edit-or-create-card/preview-card.component";
+import {PreviewCardComponent} from "../_components/preview-card/preview-card.component";
 import {Session} from "../../_models/session";
 import {SessionService} from "../../_services/session.service";
 import {DatePipe} from "@angular/common";

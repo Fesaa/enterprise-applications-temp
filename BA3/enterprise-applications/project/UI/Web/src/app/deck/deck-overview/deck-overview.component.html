@@ -49,7 +49,7 @@
         <div class="flex flex-col md:grid md:grid-cols-2 md:gap-x-2">
           @for (card of deck.cards; track card.id) {
             <div class="mt-2 md:mt-5">
-              <app-edit-or-create-card [deck]="deck" [card]="card"></app-edit-or-create-card>
+              <app-preview-card [deck]="deck" [card]="card"></app-preview-card>
             </div>
           }
         </div>

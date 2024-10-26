@@ -7,7 +7,7 @@ import {CardTypePipe} from "../../../_pipes/question-type.pipe";
 import {NgIcon} from "@ng-icons/core";
 
 @Component({
-  selector: 'app-edit-or-create-card',
+  selector: 'app-preview-card',
   standalone: true,
   imports: [
     DifficultyPipe,
