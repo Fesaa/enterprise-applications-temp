@@ -38,6 +38,16 @@ public class TagController {
         return modelMapper.map(t, TagDto.class);
     }
 
+    @PostMapping("/{tagId}")
+    public TagDto updateTag(@PathVariable String tagId, @RequestBody TagDto dto) {
+        User user = User.current();
+        Tag tag = this.tagService.getTag(dto.getId()).orElseThrow();
+        tag.assertOwner(user);
+
+        tag = this.tagService.updateTag(dto);
+        return this.modelMapper.map(tag, TagDto.class);
+    }
+
     @GetMapping
     public List<TagDto> getAllTagsForUser() {
         return tagService.getTags(User.current())

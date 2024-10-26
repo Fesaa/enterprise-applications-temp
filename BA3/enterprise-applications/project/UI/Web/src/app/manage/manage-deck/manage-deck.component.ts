@@ -42,7 +42,7 @@ export class ManageDeckComponent {
               private activatedRoute: ActivatedRoute,
   ) {
     this.navService.setNavVisibility(true);
-    this.tagService.getAll().subscribe(tags => {
+    this.tagService.all().subscribe(tags => {
       this.possibleTags = tags;
     })
 

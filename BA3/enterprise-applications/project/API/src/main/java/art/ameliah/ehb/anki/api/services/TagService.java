@@ -1,11 +1,14 @@
 package art.ameliah.ehb.anki.api.services;
 
+import art.ameliah.ehb.anki.api.dtos.tags.TagDto;
 import art.ameliah.ehb.anki.api.exceptions.AppException;
 import art.ameliah.ehb.anki.api.models.account.User;
 import art.ameliah.ehb.anki.api.models.tags.Tag;
 import art.ameliah.ehb.anki.api.models.tags.query.QTag;
 import art.ameliah.ehb.anki.api.services.model.IStringService;
 import art.ameliah.ehb.anki.api.services.model.ITagService;
+import io.ebean.DB;
+import io.ebeaninternal.server.util.Str;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class TagService implements ITagService {
+
+    private static String DEFAULT_HEX = "#fff";
 
     private final IStringService stringService;
 
@@ -81,10 +86,28 @@ public class TagService implements ITagService {
                 .user(user)
                 .name(name)
                 .normalizedName(stringService.normalize(name))
-                .hexColour(hexColour)
+                .hexColour(this.orDefaultHex(hexColour))
                 .build();
         tag.save();
         return tag;
+    }
+
+    @Override
+    public Tag updateTag(TagDto dto) {
+        Tag tag = DB.reference(Tag.class, dto.getId());
+        tag.setName(dto.getName());
+        tag.setNormalizedName(dto.getNormalizedName());
+        tag.setHexColour(this.orDefaultHex(dto.getHexColour()));
+
+        tag.save();
+        return tag;
+    }
+
+    private String orDefaultHex(String hex) {
+        if (hex == null || hex.isEmpty()) {
+            return DEFAULT_HEX;
+        }
+        return hex;
     }
 
     @Override

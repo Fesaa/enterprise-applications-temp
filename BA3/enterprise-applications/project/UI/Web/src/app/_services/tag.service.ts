@@ -23,7 +23,7 @@ export class TagService {
     );
   }
 
-  getAll(admin?: boolean) {
+  all(admin?: boolean) {
     if (admin && this.isAdmin) {
       return this.httpClient.get<Tag[]>(this.baseUrl + 'tags/all')
     }
@@ -31,7 +31,7 @@ export class TagService {
   }
 
   get(id: number) {
-    return this.httpClient.get<Tag>(this.baseUrl + 'tag/' + id);
+    return this.httpClient.get<Tag>(this.baseUrl + 'tags/' + id);
   }
 
   create(model: {name: string, hexColour: string}) {
@@ -40,7 +40,11 @@ export class TagService {
 
   delete(id: number, force?: boolean) {
     force = force && this.isAdmin;
-    return this.httpClient.delete<Tag>(this.baseUrl + 'tag/' + id + `?force=${force}`)
+    return this.httpClient.delete<Tag>(this.baseUrl + 'tags/' + id + `?force=${force}`)
+  }
+
+  update(tag: Tag) {
+    return this.httpClient.post<Tag>(this.baseUrl + 'tags/' + tag.id, tag)
   }
 
 }

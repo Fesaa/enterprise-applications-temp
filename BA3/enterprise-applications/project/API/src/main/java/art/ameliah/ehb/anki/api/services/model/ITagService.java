@@ -1,5 +1,6 @@
 package art.ameliah.ehb.anki.api.services.model;
 
+import art.ameliah.ehb.anki.api.dtos.tags.TagDto;
 import art.ameliah.ehb.anki.api.models.account.User;
 import art.ameliah.ehb.anki.api.models.tags.Tag;
 
@@ -19,6 +20,8 @@ public interface ITagService {
 
     Tag createTag(User user, String name);
     Tag createTag(User user, String name, String hexColour);
+
+    Tag updateTag(TagDto tag);
 
     void deleteTag(Long id);
     void deleteTag(Long id, boolean force);
