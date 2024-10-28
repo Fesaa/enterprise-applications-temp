@@ -18,9 +18,9 @@
               {{ card.type | cardType | titlecase }}
             </span>
           }
-          <div class="hover:cursor-pointer">
+          <a routerLink="/manage/card" [queryParams]="{deckId: deck.id, cardId: card.id}" class="hover:cursor-pointer">
             <ng-icon name="heroPencil" size="16"></ng-icon>
-          </div>
+          </a>
         </div>
       </h1>
     </div>

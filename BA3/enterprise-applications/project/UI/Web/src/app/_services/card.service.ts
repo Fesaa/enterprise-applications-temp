@@ -16,11 +16,11 @@ export class CardService {
     return this.httpClient.get<Card>(this.baseUrl + `cards/${id}`)
   }
 
-  update(id: number, model: CreateCard) {
+  update(id: number, model: Card) {
     return this.httpClient.post<Card>(this.baseUrl + `cards/${id}`, model)
   }
 
-  create(model: CreateCard) {
+  create(model: Card) {
     return this.httpClient.post<Card>(this.baseUrl + `cards`, model)
   }
 

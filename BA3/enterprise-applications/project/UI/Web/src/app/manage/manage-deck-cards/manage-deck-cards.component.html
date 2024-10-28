@@ -1,0 +1,138 @@
+@if (isLoading) {
+  <div class='flex space-x-2 justify-center items-center bg-gray-50 dark:bg-gray-900'>
+    <span class='sr-only'>Loading...</span>
+    <div class='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+    <div class='h-4 w-4 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+    <div class='h-4 w-4 bg-black rounded-full animate-bounce'></div>
+  </div>
+} @else if (deck) {
+  <div class="flex flex-col mt-5 justify-center items-center h-full bg-gray-50 overflow-scroll mb-10">
+
+    <div class="text-center mb-4">
+      <a [routerLink]="'/deck/' + deck.id" class="text-xl font-semibold text-gray-800">Deck <span class="italic">{{ deck.title }}</span></a>
+      <p class="px-24 text-gray-600">{{ deck.description }}</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #cardForm="ngForm" class="space-y-4 w-full max-w-2xl">
+      <div>
+        <label for="type" class="block text-gray-700">Type</label>
+        <select
+          id="type"
+          name="type"
+          required
+          [(ngModel)]="card.type"
+          class="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-gray-100 text-gray-800 focus:border-blue-500 focus:ring focus:ring-blue-500"
+        >
+          <option *ngFor="let type of cardTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="difficulty" class="block text-gray-700">Difficulty</label>
+        <select
+          id="difficulty"
+          name="difficulty"
+          required
+          [(ngModel)]="card.difficulty"
+          class="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-gray-100 text-gray-800 focus:border-blue-500 focus:ring focus:ring-blue-500"
+        >
+          <option *ngFor="let level of difficulties" [value]="level">{{ level }}</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="question" class="block text-gray-700">Question</label>
+        <textarea
+          id="question"
+          name="question"
+          required
+          [(ngModel)]="card.question"
+          rows="3"
+          class="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-gray-100 text-gray-800 focus:border-blue-500 focus:ring focus:ring-blue-500"
+          placeholder="Enter question"
+        ></textarea>
+      </div>
+
+      <div>
+        <label for="hint" class="block text-gray-700">Hint (optional)</label>
+        <input
+          id="hint"
+          name="hint"
+          type="text"
+          [(ngModel)]="card.hint"
+          class="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-gray-100 text-gray-800 focus:border-blue-500 focus:ring focus:ring-blue-500"
+          placeholder="Enter hint"
+        />
+      </div>
+
+      <div>
+        <label for="information" class="block text-gray-700">Information</label>
+        <textarea
+          id="information"
+          name="information"
+          required
+          [(ngModel)]="card.information"
+          rows="3"
+          class="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-gray-100 text-gray-800 focus:border-blue-500 focus:ring focus:ring-blue-500"
+          placeholder="Enter additional information"
+        ></textarea>
+      </div>
+
+      <div>
+        <label class="block text-gray-700">Answers</label>
+        <div *ngIf="card.type === 'STANDARD'" class="flex flex-row items-center space-x-2">
+          <input
+            id="standard-answer"
+            type="text"
+            [(ngModel)]="card.answers[0].answer"
+            class="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-gray-100 text-gray-800 focus:border-blue-500 focus:ring focus:ring-blue-500"
+            placeholder="Enter answer"
+            name="answer"
+          />
+        </div>
+
+        <div *ngIf="card.type === 'MULTI'">
+          <div *ngFor="let answer of card.answers; let i = index" class="flex items-center space-x-2">
+            <input
+              type="text"
+              [(ngModel)]="answer.answer"
+              class="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-gray-100 text-gray-800 focus:border-blue-500 focus:ring focus:ring-blue-500"
+              placeholder="Enter answer"
+              [name]="'answer' + i"
+            />
+            <input
+              type="checkbox"
+              [(ngModel)]="answer.correct"
+              class="focus:ring focus:ring-blue-500"
+              [name]="'correct' + i"
+            />
+            <button
+              type="button"
+              class="text-red-500 hover:text-red-700"
+              (click)="removeAnswer(i)"
+              aria-label="Remove answer"
+            >
+              &#10005; <!-- X symbol -->
+            </button>
+          </div>
+          <button
+            type="button"
+            class="mt-2 w-full bg-green-500 text-white py-1 rounded-md hover:bg-green-400 focus:outline-none focus:ring focus:ring-green-300"
+            (click)="addAnswer()"
+            *ngIf="card.answers.length < 4"
+          >
+            Add Answer
+          </button>
+        </div>
+      </div>
+
+
+      <button
+        type="submit"
+        class="mt-4 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300"
+      >
+        Save Card
+      </button>
+    </form>
+  </div>
+}

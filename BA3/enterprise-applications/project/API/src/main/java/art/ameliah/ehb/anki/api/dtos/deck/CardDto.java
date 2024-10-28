@@ -12,6 +12,8 @@ public class CardDto {
 
     Long id;
 
+    Long deckId;
+
     Card.CardType type;
 
     Card.Difficulty difficulty;

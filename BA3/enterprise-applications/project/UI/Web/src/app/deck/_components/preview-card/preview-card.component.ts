@@ -5,6 +5,7 @@ import {DifficultyPipe} from "../../../_pipes/difficulty.pipe";
 import {TitleCasePipe} from "@angular/common";
 import {CardTypePipe} from "../../../_pipes/question-type.pipe";
 import {NgIcon} from "@ng-icons/core";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-preview-card',
@@ -13,7 +14,8 @@ import {NgIcon} from "@ng-icons/core";
     DifficultyPipe,
     CardTypePipe,
     TitleCasePipe,
-    NgIcon
+    NgIcon,
+    RouterLink
   ],
   templateUrl: './preview-card.component.html',
   styleUrl: './preview-card.component.css'

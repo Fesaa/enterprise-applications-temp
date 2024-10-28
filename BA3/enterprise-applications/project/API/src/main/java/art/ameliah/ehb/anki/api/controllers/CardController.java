@@ -1,13 +1,16 @@
 package art.ameliah.ehb.anki.api.controllers;
 
 import art.ameliah.ehb.anki.api.annotations.BaseController;
+import art.ameliah.ehb.anki.api.dtos.deck.AnswerDto;
 import art.ameliah.ehb.anki.api.dtos.deck.CardDto;
-import art.ameliah.ehb.anki.api.dtos.deck.CreateCardDto;
 import art.ameliah.ehb.anki.api.exceptions.UnAuthorized;
 import art.ameliah.ehb.anki.api.models.account.User;
+import art.ameliah.ehb.anki.api.models.deck.Answer;
 import art.ameliah.ehb.anki.api.models.deck.Card;
 import art.ameliah.ehb.anki.api.models.deck.Deck;
+import art.ameliah.ehb.anki.api.services.AnswerService;
 import art.ameliah.ehb.anki.api.services.model.ICardService;
+import io.ebean.DB;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Slf4j
 @BaseController
 @RequestMapping("/api/cards")
@@ -25,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CardController {
 
     private final ICardService cardService;
+    private final AnswerService answerService;
     private final ModelMapper modelMapper;
 
     @GetMapping("/{id}")
@@ -33,42 +39,52 @@ public class CardController {
     }
 
     @PostMapping("/{id}")
-    public CardDto updateCard(@PathVariable Long id, @RequestBody CreateCardDto createCardDto) {
+    public CardDto updateCard(@PathVariable Long id, @RequestBody CardDto dto) {
         Card card = cardService.getCard(id).orElseThrow();
         if (!card.getDeck().isOwner(User.current()))
             throw new UnAuthorized();
 
-        if (createCardDto.getHint() != null)
-            card.setHint(createCardDto.getHint());
+        if (dto.getHint() != null)
+            card.setHint(dto.getHint());
 
-        if (createCardDto.getType() != null)
-            card.setType(createCardDto.getType());
+        if (dto.getType() != null)
+            card.setType(dto.getType());
 
-        if (createCardDto.getInformation() != null)
-            card.setInformation(createCardDto.getInformation());
+        if (dto.getInformation() != null)
+            card.setInformation(dto.getInformation());
 
-        if (createCardDto.getDifficulty() != null)
-            card.setDifficulty(createCardDto.getDifficulty());
+        if (dto.getDifficulty() != null)
+            card.setDifficulty(dto.getDifficulty());
 
-        if (createCardDto.getQuestion() != null)
-            card.setQuestion(createCardDto.getQuestion());
+        if (dto.getQuestion() != null)
+            card.setQuestion(dto.getQuestion());
+
+        card.setAnswers(dto.getAnswers()
+                .stream()
+                .map(a -> Answer.builder()
+                        .answer(a.getAnswer())
+                        .correct(a.getCorrect())
+                        .build())
+                .toList());
 
 
         card.save();
+        this.answerService.updateAnswers(card.getId(), dto.getAnswers());
         return modelMapper.map(card, CardDto.class);
     }
 
     @PostMapping
-    public CardDto createCard(@RequestBody CreateCardDto card) {
+    public CardDto createCard(@RequestBody CardDto card) {
         Card c = cardService.create(Card.builder()
                 .difficulty(card.getDifficulty())
                 .hint(card.getHint())
                 .type(card.getType())
                 .information(card.getInformation())
                 .question(card.getQuestion())
-                .deck(new Deck(card.getDeck()))
+                .deck(DB.reference(Deck.class, card.getDeckId()))
                 .build());
 
+        this.answerService.updateAnswers(c.getId(), card.getAnswers());
         return modelMapper.map(c, CardDto.class);
     }
 

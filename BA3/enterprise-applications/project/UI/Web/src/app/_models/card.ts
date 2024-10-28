@@ -1,6 +1,7 @@
 
 export interface Card {
   id: number;
+  deckId: number;
   type: CardType;
   difficulty: Difficulty;
   question: string;
@@ -14,12 +15,16 @@ export enum CardType {
   MULTI = "MULTI",
 }
 
+export const cardTypes = Object.keys(CardType);
+
 export enum Difficulty {
   EASY = "EASY",
   MEDIUM = "MEDIUM",
   HARD = "HARD",
   IMPOSSIBLE = "IMPOSSIBLE",
 }
+
+export const difficulties = Object.keys(Difficulty)
 
 export interface CreateCard {
   type: CardType;
