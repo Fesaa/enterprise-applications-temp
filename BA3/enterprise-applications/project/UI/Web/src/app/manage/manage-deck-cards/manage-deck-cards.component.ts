@@ -37,12 +37,13 @@ export class ManageDeckCardsComponent {
       {
         id: -1,
         answer: '',
-        correct: false,
+        correct: true,
       }
     ]
   };
 
   isLoading: boolean = true;
+  isSubmitting: boolean = false;
 
 
   constructor(
@@ -117,7 +118,42 @@ export class ManageDeckCardsComponent {
   }
 
   onSubmit() {
-    console.log(this.card);
+    if (this.isSubmitting) {
+      return;
+    }
+
+    this.isSubmitting = true;
+
+    if (this.card.question == '') {
+      this.toastR.error("Question must not be left empty.");
+      this.isSubmitting = false;
+      return
+    }
+
+    if (this.card.information == '') {
+      this.toastR.error("Information must not be left empty.");
+      this.isSubmitting = false;
+      return;
+    }
+
+    if (this.card.answers.filter(a => a.correct).length < 1) {
+      this.toastR.error("You must include at least one correct answer.");
+      this.isSubmitting = false;
+      return;
+    }
+
+    if (this.card.type === CardType.STANDARD) {
+      this.card.answers = [this.card.answers[0]]
+    }
+
+    const max = this.card.type === CardType.STANDARD ? 1 : 4;
+    if (this.card.answers.length > max) {
+      this.toastR.error(`You may only have ${max} different answers.`);
+      this.isSubmitting = false;
+      return;
+    }
+
+
     let obs: Observable<Card>;
 
     if (this.card.id === -1) {
@@ -134,6 +170,10 @@ export class ManageDeckCardsComponent {
       error: err => {
         console.error(err);
         this.toastR.error("Failed to update card")
+        this.isSubmitting = false;
+      },
+      complete: () => {
+        this.isSubmitting = false;
       }
     })
 

@@ -13,6 +13,7 @@ import art.ameliah.ehb.anki.api.services.model.ICardService;
 import io.ebean.DB;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
 @BaseController
@@ -39,42 +39,31 @@ public class CardController {
     }
 
     @PostMapping("/{id}")
-    public CardDto updateCard(@PathVariable Long id, @RequestBody CardDto dto) {
+    public CardDto updateCard(@PathVariable Long id, @RequestBody CardDto dto) throws BadRequestException {
+        if (dto.isInValid()) {
+            throw new BadRequestException();
+        }
+
         Card card = cardService.getCard(id).orElseThrow();
         if (!card.getDeck().isOwner(User.current()))
             throw new UnAuthorized();
 
-        if (dto.getHint() != null)
-            card.setHint(dto.getHint());
-
-        if (dto.getType() != null)
-            card.setType(dto.getType());
-
-        if (dto.getInformation() != null)
-            card.setInformation(dto.getInformation());
-
-        if (dto.getDifficulty() != null)
-            card.setDifficulty(dto.getDifficulty());
-
-        if (dto.getQuestion() != null)
-            card.setQuestion(dto.getQuestion());
-
-        card.setAnswers(dto.getAnswers()
-                .stream()
-                .map(a -> Answer.builder()
-                        .answer(a.getAnswer())
-                        .correct(a.getCorrect())
-                        .build())
-                .toList());
-
-
+        card.setHint(dto.getHint());
+        card.setType(dto.getType());
+        card.setInformation(dto.getInformation());
+        card.setDifficulty(dto.getDifficulty());
+        card.setQuestion(dto.getQuestion());
         card.save();
         this.answerService.updateAnswers(card.getId(), dto.getAnswers());
-        return modelMapper.map(card, CardDto.class);
+        return modelMapper.map(this.cardService.getCard(card.getId()), CardDto.class);
     }
 
     @PostMapping
-    public CardDto createCard(@RequestBody CardDto card) {
+    public CardDto createCard(@RequestBody CardDto card) throws BadRequestException {
+        if (card.isInValid()) {
+            throw new BadRequestException();
+        }
+
         Card c = cardService.create(Card.builder()
                 .difficulty(card.getDifficulty())
                 .hint(card.getHint())
@@ -85,7 +74,7 @@ public class CardController {
                 .build());
 
         this.answerService.updateAnswers(c.getId(), card.getAnswers());
-        return modelMapper.map(c, CardDto.class);
+        return modelMapper.map(this.cardService.getCard(card.getId()), CardDto.class);
     }
 
     @DeleteMapping("/{id}")
