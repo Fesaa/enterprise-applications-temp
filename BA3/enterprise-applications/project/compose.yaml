@@ -2,13 +2,13 @@
 services:
 
   web:
-    image: project:local
+    image: ameliaah/ehb:enterprise-applications
     environment:
       - "DB=postgres"
     networks:
       - backend
     ports:
-      - "8000:8080"
+      - "80:8080"
 
   postgres:
     image: postgres:latest
