@@ -28,9 +28,7 @@ RUN ./gradlew build
 
 FROM eclipse-temurin:23
 
-ARG JAR_FILE
-
-COPY --from=builder /src/build/libs/${JAR_FILE}.jar /app.jar
+COPY --from=builder /src/build/libs/API-0.0.1-SNAPSHOT.jar /app.jar
 
 HEALTHCHECK CMD curl --fail http://0.0.0.0:8080/health || exit 1
 

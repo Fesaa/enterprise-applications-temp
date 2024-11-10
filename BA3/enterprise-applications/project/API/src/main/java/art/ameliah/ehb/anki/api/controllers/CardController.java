@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Optional;
+
 @Slf4j
 @BaseController
 @RequestMapping("/api/cards")
@@ -55,7 +57,7 @@ public class CardController {
         card.setQuestion(dto.getQuestion());
         card.save();
         this.answerService.updateAnswers(card.getId(), dto.getAnswers());
-        return modelMapper.map(this.cardService.getCard(card.getId()), CardDto.class);
+        return modelMapper.map(this.cardService.getCard(card.getId()).orElseThrow(), CardDto.class);
     }
 
     @PostMapping
@@ -74,7 +76,7 @@ public class CardController {
                 .build());
 
         this.answerService.updateAnswers(c.getId(), card.getAnswers());
-        return modelMapper.map(this.cardService.getCard(card.getId()), CardDto.class);
+        return modelMapper.map(this.cardService.getCard(c.getId()).orElseThrow(), CardDto.class);
     }
 
     @DeleteMapping("/{id}")

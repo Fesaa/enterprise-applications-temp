@@ -84,13 +84,8 @@ export class UserLoginComponent implements OnInit {
     res.subscribe({
       next: (user) => {
         this.loginForm.reset();
-        const pageResume = localStorage.getItem(AuthGuard.urlKey);
         localStorage.setItem(AuthGuard.urlKey, '');
-        if (pageResume && pageResume !== '/login') {
-          this.router.navigateByUrl(pageResume);
-        } else {
-          this.router.navigateByUrl('/home');
-        }
+        this.router.navigateByUrl('/home');
       },
       error: (err) => {
         this.toastR.error(`Unable to ${this.mode === Mode.LOGIN ? "login" : "register"}\n` + err.message, "Error");

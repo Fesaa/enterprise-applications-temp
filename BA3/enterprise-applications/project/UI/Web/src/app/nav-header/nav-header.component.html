@@ -32,12 +32,13 @@
         </div>
 
         <div class="inset-y-0 right-0 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 flex space-x-4">
-          <a
-            [routerLink]="['settings']"
-            class="text-white text-sm font-medium hidden sm:block hover:bg-pink-600 hover:shadow-md transition duration-300 rounded-full px-4 py-2"
-          >
-            Settings
-          </a>
+
+          @if (user) {
+            <div class="text-white text-sm font-medium transition duration-300 rounded-full px-4 py-2">
+              Hi {{user.username}}
+            </div>
+          }
+
           <button class="text-white text-sm font-medium hover:bg-pink-600 hover:shadow-md transition duration-300 rounded-full px-4 py-2" (click)="accountService.logout()">
             Logout
           </button>
