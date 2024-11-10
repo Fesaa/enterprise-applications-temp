@@ -88,7 +88,7 @@ export class UserLoginComponent implements OnInit {
         this.router.navigateByUrl('/home');
       },
       error: (err) => {
-        this.toastR.error(`Unable to ${this.mode === Mode.LOGIN ? "login" : "register"}\n` + err.message, "Error");
+        this.toastR.error(`Unable to ${this.mode === Mode.LOGIN ? "login" : "register"}\n` + err.error.message, "Error");
       },
       complete: () => {
         this.isSubmitting = false;
