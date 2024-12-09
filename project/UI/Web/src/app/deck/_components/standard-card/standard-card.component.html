@@ -1,0 +1,48 @@
+<div class="max-w-[60%] mx-auto bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200">
+  <div class="bg-pink-500 p-4 text-white text-lg font-semibold flex flex-row">
+    <h1 class="mr-2">Question:</h1>
+    <p class="text-white text-lg font-medium">{{ card.question }}</p>
+  </div>
+
+  <div class="px-6 pt-4">
+    <div class="mt-4 text-center">
+      {{card.information}}
+    </div>
+
+    <div class="border-t border-dotted border-gray-400 mt-4"></div>
+  </div>
+
+  <div class="px-6 py-4">
+    <div *ngIf="card.hint" class="mt-4 text-center">
+      <button
+        (click)="toggleHint()"
+        class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      >
+        {{ showHint ? 'Hide Hint' : 'Show Hint' }}
+      </button>
+      <p *ngIf="showHint" class="text-sm text-gray-600 mt-4 bg-gray-100 p-3 rounded-md">
+        {{ card.hint }}
+      </p>
+    </div>
+  </div>
+
+  <div class="px-6 py-2 mt-6">
+    <label for="answer" class="block text-gray-600 font-semibold mb-2">Your Answer:</label>
+    <input
+      [(ngModel)]="userAnswer"
+      id="answer"
+      type="text"
+      class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-pink-300"
+      placeholder="Type your answer here"
+    />
+  </div>
+
+  <div class="px-6 py-2 mt-6">
+    <button
+      (click)="submitAnswer()"
+      class="w-full bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+    >
+      Submit Answer
+    </button>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+<div class="max-w-[60%] mx-auto bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200">
+  <div class="bg-pink-500 p-4 text-white text-lg font-semibold">
+    <h1>{{ card.question }}</h1>
+  </div>
+
+  <div class="px-6 pt-4">
+    <div class="mt-4 text-center">
+      {{card.information}}
+    </div>
+
+    <div class="border-t border-dotted border-gray-400 mt-4"></div>
+  </div>
+
+  <div class="px-6 py-4">
+    <div *ngIf="card.hint" class="mt-4 text-center">
+      <button
+        (click)="toggleHint()"
+        class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      >
+        {{ showHint ? 'Hide Hint' : 'Show Hint' }}
+      </button>
+      <p *ngIf="showHint" class="text-sm text-gray-600 mt-4 bg-gray-100 p-3 rounded-md">
+        {{ card.hint }}
+      </p>
+    </div>
+  </div>
+
+  <div class="px-6 py-4">
+    <div class="mt-4 text-center">
+      <p class="text-gray-600 font-semibold mb-4">Select your answers:</p>
+      <div class="grid grid-cols-2 gap-4">
+        <button
+          *ngFor="let answer of card.answers"
+          (click)="toggleAnswer(answer.id)"
+          [ngClass]="{
+            'bg-pink-500 text-white': isSelected(answer.id),
+            'bg-gray-200 text-gray-700': !isSelected(answer.id)
+          }"
+          class="w-full py-2 px-4 rounded-lg font-bold focus:outline-none"
+        >
+          {{ answer.answer }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="px-6 py-4">
+    <button
+      (click)="submitAnswers()"
+      class="w-full bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+    >
+      Submit Answers
+    </button>
+  </div>
+</div>

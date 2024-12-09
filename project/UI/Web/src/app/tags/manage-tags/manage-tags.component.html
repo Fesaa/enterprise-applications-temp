@@ -1,0 +1,13 @@
+
+<div class="w-full flex flex-col space-y-2 px-14 mt-5">
+
+  <h1 class="w-full text-xl font-bold">Tags </h1>
+  <span class="px-4">
+    You may edit the tags name or colour, by clicking on the text.
+  </span>
+
+  @for (tag of tags; track tag.id) {
+    <app-tag-edit [tag]="tag" (update)="handleUpdate($event)"></app-tag-edit>
+  }
+
+</div>

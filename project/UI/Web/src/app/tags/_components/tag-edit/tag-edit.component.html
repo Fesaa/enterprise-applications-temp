@@ -1,0 +1,8 @@
+
+<div [style.backgroundColor]="hex" class="justify-between px-4 py-2 rounded-xl bg-white border border-gray-50 hover:shadow flex flex-row">
+
+  <app-string-updater [text]="tag.name" (onSave)="updateName($event)"></app-string-updater>
+
+  <app-string-updater [text]="tag.hexColour" (onSave)="updateHexColour($event)" (onChange)="changeBg($event)"></app-string-updater>
+
+</div>
