@@ -10,11 +10,6 @@
   transition: border-color 0.3s;
 }
 
-.text-display:hover {
-  border-color: pink;
-  border-radius: 5px;
-}
-
 .input-container {
   display: flex;
   align-items: center;

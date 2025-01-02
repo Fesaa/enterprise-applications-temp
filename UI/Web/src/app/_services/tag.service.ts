@@ -38,7 +38,7 @@ export class TagService {
     return this.httpClient.post<Tag>(this.baseUrl + 'tags', model)
   }
 
-  delete(id: number, force?: boolean) {
+  delete(id: number, force: boolean = false) {
     force = force && this.isAdmin;
     return this.httpClient.delete<Tag>(this.baseUrl + 'tags/' + id + `?force=${force}`)
   }

@@ -1,15 +1,15 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Tag} from "../../../_models/tag";
-import {NgStyle} from "@angular/common";
 import {StringUpdaterComponent} from "../../../forms/string-updater/string-updater.component";
 import {ToastrService} from "ngx-toastr";
+import {NgIcon} from "@ng-icons/core";
 
 @Component({
   selector: 'app-tag-edit',
   standalone: true,
   imports: [
-    NgStyle,
-    StringUpdaterComponent
+    StringUpdaterComponent,
+    NgIcon
   ],
   templateUrl: './tag-edit.component.html',
   styleUrl: './tag-edit.component.css'
@@ -19,6 +19,8 @@ export class TagEditComponent implements OnInit {
   @Input({required: true}) tag!: Tag;
 
   @Output() update: EventEmitter<Tag> = new EventEmitter<Tag>();
+
+  @Output() delete: EventEmitter<Tag> = new EventEmitter<Tag>();
 
   hex: string = '';
 
@@ -36,11 +38,21 @@ export class TagEditComponent implements OnInit {
   }
 
   updateName(name: string) {
+    if (name === this.tag.name) {
+      return;
+    }
     this.tag.name = name;
     this.update.emit(this.tag);
   }
 
   updateHexColour(hex: string) {
+    if (hex === this.hex) {
+      return;
+    }
+    if (!hex.startsWith("#")) {
+      hex = "#" + hex;
+    }
+
     if (!this.isValidHex(hex)) {
       this.toastR.error(`${hex} is not a valid hex`, "Error");
       return;
@@ -48,6 +60,10 @@ export class TagEditComponent implements OnInit {
 
     this.tag.hexColour = hex;
     this.update.emit(this.tag);
+  }
+
+  deleteTag(): void {
+    this.delete.emit(this.tag);
   }
 
 

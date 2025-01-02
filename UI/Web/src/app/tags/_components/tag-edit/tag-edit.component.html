@@ -3,6 +3,21 @@
 
   <app-string-updater [text]="tag.name" (onSave)="updateName($event)"></app-string-updater>
 
-  <app-string-updater [text]="tag.hexColour" (onSave)="updateHexColour($event)" (onChange)="changeBg($event)"></app-string-updater>
+  <div class="flex flex-row space-x-5 items-center">
+    <app-string-updater [text]="tag.hexColour" (onSave)="updateHexColour($event)" (onChange)="changeBg($event)"></app-string-updater>
+
+
+    <svg
+      (click)="deleteTag()"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="w-8 h-8 text-red-500 cursor-pointer hover:text-red-700"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </div>
 
 </div>

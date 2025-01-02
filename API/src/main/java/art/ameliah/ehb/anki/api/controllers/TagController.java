@@ -87,7 +87,7 @@ public class TagController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTag(@PathVariable Long id, @Nullable @RequestParam Boolean force) {
+    public TagDto deleteTag(@PathVariable Long id, @Nullable @RequestParam Boolean force) {
         Tag tag = tagService.getTag(id).orElseThrow();
 
         force = force != null && force && User.current().isAdmin();
@@ -96,6 +96,7 @@ public class TagController {
         }
 
         tagService.deleteTag(id, force);
+        return modelMapper.map(tag, TagDto.class);
     }
 
 }

@@ -7,7 +7,14 @@
   </span>
 
   @for (tag of tags; track tag.id) {
-    <app-tag-edit [tag]="tag" (update)="handleUpdate($event)"></app-tag-edit>
+    <app-tag-edit [tag]="tag" (update)="handleUpdate($event)" (delete)="handleDelete($event)"></app-tag-edit>
   }
+
+  <div class="flex justify-end mt-4">
+    <div (click)="addEmptyTag()"
+      class="px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-lg shadow-md hover:from-pink-600 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-2 hover:cursor-pointer">
+      + Add Tag
+    </div>
+  </div>
 
 </div>
