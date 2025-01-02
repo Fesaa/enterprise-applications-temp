@@ -10,6 +10,11 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 public class RedirectController {
 
+    @RequestMapping("")
+    public RedirectView redirect() {
+        return new RedirectView("/index.html");
+    }
+
     @RequestMapping("/{path:[^\\.]*}")
     public RedirectView redirectToIndex() {
         return new RedirectView("/index.html");
