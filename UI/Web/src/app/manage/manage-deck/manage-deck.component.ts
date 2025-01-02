@@ -9,13 +9,15 @@ import {FormsModule} from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Deck} from "../../_models/deck";
+import {NgTemplateOutlet} from "@angular/common";
 
 @Component({
   selector: 'app-manage-deck',
   standalone: true,
   imports: [
     DropAndCreateComponent,
-    FormsModule
+    FormsModule,
+    NgTemplateOutlet
   ],
   templateUrl: './manage-deck.component.html',
   styleUrl: './manage-deck.component.css'
