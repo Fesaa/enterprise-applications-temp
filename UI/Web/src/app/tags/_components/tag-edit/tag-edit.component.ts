@@ -46,7 +46,7 @@ export class TagEditComponent implements OnInit {
   }
 
   updateHexColour(hex: string) {
-    if (hex === this.hex) {
+    if (hex === this.tag.hexColour) {
       return;
     }
     if (!hex.startsWith("#")) {
